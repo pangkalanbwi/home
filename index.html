@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RM Pangkalan - Natural Resto System</title>
+    
+    <!-- PWA & Optimization -->
+    <meta name="theme-color" content="#52bc1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlJNIFBhbmthbGFuIiwKICAic2hvcnRfbmFtZSI6ICJQYW5rYWxhbiIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAmZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3ciOiAiIzUyYmMxYSIKfQ==">
+    
+    <!-- Design Assets -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        :root { 
+            --p-deep: #4a5d4e; 
+            --p-soft: #f1f4ed; 
+            --p-accent: #52bc1a; 
+            --p-highlight: #ccff00; 
+            --p-text: #2d342d;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--p-soft); 
+            color: var(--p-text);
+            -webkit-tap-highlight-color: transparent; 
+            overflow-x: hidden;
+        }
+        .hero-font { font-family: 'Playfair Display', serif; }
+        
+        /* Smooth Page Transitions */
+        .page-view { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+        .page-view.active { display: block; opacity: 1; transform: translateY(0); }
+        
+        .sidebar-item { transition: all 0.2s; border-radius: 1rem; color: #64748b; }
+        .sidebar-item.active { background: #52bc1a; color: white !important; box-shadow: 0 4px 15px rgba(82, 188, 26, 0.3); }
+        .sidebar-item.active i { color: white !important; }
+        
+        /* Mobile Bottom Nav Pill - Protruding Center */
+        .bottom-pill {
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+            width: 94%; max-width: 450px; background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px); border-radius: 2.5rem;
+            display: flex; justify-content: space-around; align-items: center;
+            padding: 8px 5px; box-shadow: 0 15px 45px rgba(0,0,0,0.1); z-index: 1000;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .nav-btn { position: relative; display: flex; flex-direction: column; align-items: center; color: #94a3b8; transition: 0.3s; }
+        .nav-btn.active { color: var(--p-accent); }
+        .nav-btn.active::after { content: ''; position: absolute; bottom: -6px; width: 4px; height: 4px; background: var(--p-accent); border-radius: 50%; }
+        
+        .cart-center {
+            background: var(--p-accent); color: white; width: 58px; height: 58px;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            margin-top: -45px; border: 5px solid var(--p-soft); box-shadow: 0 10px 25px rgba(82,188,26,0.3);
+            transition: 0.3s;
+        }
+        .cart-center:active { transform: scale(0.9); }
+
+        /* Slide Overlays */
+        .slide-overlay { 
+            position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 480px;
+            background: white; z-index: 2000; transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -15px 0 40px rgba(0,0,0,0.08);
+        }
+        .slide-overlay.open { transform: translateX(0); }
+
+        /* Backdrop */
+        #global-backdrop {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px); z-index: 1500; display: none; opacity: 0; transition: 0.3s;
+        }
+        #global-backdrop.show { display: block; opacity: 1; }
+
+        .btn-primary { background: var(--p-accent); color: white; transition: 0.3s; }
+        .btn-primary:active { transform: scale(0.96); }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Overlay Backdrop -->
+    <div id="global-backdrop" onclick="closeAllOverlays()"></div>
+
+    <div id="app" class="min-h-screen flex flex-col lg:flex-row">
+        
+        <!-- Sidebar Desktop -->
+        <aside class="hidden lg:flex flex-col w-72 bg-white border-r border-slate-100 p-6 sticky top-0 h-screen z-50">
+            <div class="mb-10 px-2">
+                <h1 class="hero-font text-3xl font-bold text-slate-800 leading-none">Pangkalan</h1>
+                <p class="text-[10px] uppercase tracking-[0.3em] text-[#52bc1a] font-bold mt-1">Natural Resto</p>
+            </div>
+            
+            <nav class="flex-1 space-y-1 overflow-y-auto no-scrollbar">
+                <p class="text-[10px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest">Aktivitas</p>
+                <button onclick="router('dashboard')" id="side-dashboard" class="sidebar-item active w-full flex items-center gap-4 p-4 hover:bg-slate-50">
+                    <i data-lucide="layout-grid" size="20"></i> <span class="text-sm font-semibold">Beranda</span>
+                </button>
+                <button onclick="router('history')" id="side-history" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50">
+                    <i data-lucide="history" size="20"></i> <span class="text-sm font-semibold">Riwayat Pesanan</span>
+                </button>
+                <button onclick="toggleCart()" class="sidebar-item w-full flex items-center justify-between p-4 hover:bg-slate-50 text-slate-600">
+                    <div class="flex items-center gap-4">
+                        <i data-lucide="shopping-basket" size="20"></i> <span class="text-sm font-semibold">Keranjang Belanja</span>
+                    </div>
+                    <span id="sidebar-cart-count" class="bg-[#52bc1a] text-white text-[10px] px-2 py-1 rounded-full font-bold hidden">0</span>
+                </button>
+                <button onclick="router('settings')" id="side-profile" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50">
+                    <i data-lucide="user" size="20"></i> <span class="text-sm font-semibold">Member Area</span>
+                </button>
+
+                <p class="text-[10px] font-black text-slate-300 uppercase px-4 mt-8 mb-2 tracking-widest">Kategori Menu</p>
+                <div class="space-y-1">
+                    <button onclick="filterMenu('Makanan')" id="cat-Makanan" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50"><i data-lucide="utensils" size="18"></i> <span class="text-sm">Makanan</span></button>
+                    <button onclick="filterMenu('Segeran')" id="cat-Segeran" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50"><i data-lucide="glass-water" size="18"></i> <span class="text-sm">Segeran</span></button>
+                    <button onclick="filterMenu('Wedangan')" id="cat-Wedangan" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50"><i data-lucide="coffee" size="18"></i> <span class="text-sm">Wedangan</span></button>
+                </div>
+                
+                <div id="nav-staff" class="hidden pt-6 mt-6 border-t border-slate-50 space-y-1">
+                    <p class="text-[10px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest">Backoffice</p>
+                    <button onclick="router('pegawai')" id="side-pegawai" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50"><i data-lucide="user-cog" size="20"></i> <span class="text-sm">Absensi Staf</span></button>
+                    <button onclick="router('owner')" id="side-owner" class="hidden sidebar-item w-full items-center gap-4 p-4 hover:bg-slate-50 text-emerald-700 font-bold border-t border-slate-50 pt-4 mt-2"><i data-lucide="shield-check" size="20"></i> <span class="text-sm">Owner Panel</span></button>
+                </div>
+            </nav>
+
+            <!-- Bagian Akses & Sistem (Bawah Sidebar) -->
+            <div class="pt-6 border-t border-slate-50">
+                <button onclick="router('settings')" id="side-settings" class="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition mb-2 text-slate-500 font-medium">
+                    <i data-lucide="settings" size="20"></i> <span class="text-sm">Setelan</span>
+                </button>
+                <button id="btn-auth-side" onclick="handleAuth()" class="w-full flex items-center gap-4 p-4 rounded-2xl text-red-500 hover:bg-red-50 transition group">
+                    <i data-lucide="log-in" size="20" class="group-hover:translate-x-1 transition"></i> <span id="auth-text-side" class="text-sm font-bold">Masuk Member</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-4 lg:p-10 pb-36 lg:pb-10 overflow-y-auto relative">
+            
+            <header class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 id="page-title" class="text-2xl font-bold text-slate-800 leading-none tracking-tight">Selamat Datang</h2>
+                    <p class="text-[10px] text-slate-400 mt-2 flex items-center gap-2" id="sync-info">
+                        <span id="sync-indicator" class="w-2 h-2 rounded-full bg-slate-300"></span> Sistem Online
+                    </p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="router('settings')" class="p-1 bg-white rounded-full border border-slate-100 shadow-sm">
+                        <img id="header-avatar" src="https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff" class="w-9 h-9 rounded-full object-cover">
+                    </button>
+                </div>
+            </header>
+
+            <!-- VIEW: DASHBOARD -->
+            <div id="view-dashboard" class="page-view active">
+                <section class="relative h-52 lg:h-[420px] rounded-[30px] lg:rounded-[45px] overflow-hidden mb-12 shadow-xl group">
+                    <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent flex items-center px-8 lg:px-20">
+                        <div class="max-w-[280px] lg:max-w-lg">
+                            <p class="text-[#ccff00] font-bold tracking-[0.3em] text-[7px] lg:text-[10px] uppercase mb-2 lg:mb-4">Best Nutrition With</p>
+                            <h2 class="hero-font text-2xl lg:text-7xl text-white italic leading-tight mb-4 lg:mb-10">Pangkalan <br><span class="text-[#ccff00]">Natural Resto</span></h2>
+                            <button onclick="scrollToGrid()" class="btn-primary px-6 lg:px-12 py-3 lg:py-5 rounded-2xl font-bold text-[10px] lg:text-sm shadow-xl">Lihat Menu Makan</button>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="grid-menu" class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"></div>
+            </div>
+
+            <!-- VIEW: ONLINE ORDER -->
+            <div id="view-online" class="page-view">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="bg-white p-8 rounded-[40px] shadow-xl border border-slate-50">
+                        <h2 class="text-2xl font-bold mb-6 text-slate-800 flex items-center gap-3"><i data-lucide="bike" class="text-[#52bc1a]"></i> Layanan Delivery</h2>
+                        <div class="space-y-6">
+                            <div class="p-6 bg-emerald-50 rounded-3xl border border-emerald-100 flex items-start gap-4">
+                                <div class="bg-white p-3 rounded-2xl text-[#52bc1a] shadow-sm"><i data-lucide="map-pin"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-emerald-900">Jarak Maksimal</h4>
+                                    <p class="text-sm text-emerald-700 leading-relaxed">Gratis ongkir untuk jarak antar hingga 1km dari Rumah Makan Pangkalan.</p>
+                                </div>
+                            </div>
+                            <div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100">
+                                <h4 class="font-bold text-slate-800 mb-6">Pertanyaan Pemesanan (Q&A)</h4>
+                                <div class="space-y-3">
+                                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                                        <p class="font-bold text-slate-700 text-sm mb-1">Bagaimana cara cek radius?</p>
+                                        <p class="text-xs text-slate-500">Saat checkout online, tim kami akan melakukan validasi lokasi via koordinat GPS yang Anda kirim.</p>
+                                    </div>
+                                    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm">
+                                        <p class="font-bold text-slate-700 text-sm mb-1">Jam berapa delivery aktif?</p>
+                                        <p class="text-xs text-slate-500">Mulai pukul 09.00 hingga 21.00 WIB setiap harinya.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: SETTINGS / REGISTER -->
+            <div id="view-settings" class="page-view">
+                <div class="max-w-2xl mx-auto space-y-8">
+                    <div class="bg-white p-10 rounded-[45px] shadow-xl text-center border border-slate-50 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-2 bg-[#52bc1a]"></div>
+                        <div class="relative w-28 h-28 mx-auto mb-6">
+                            <img id="u-avatar" src="https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff" class="w-full h-full rounded-[35px] border-4 border-white shadow-xl object-cover">
+                            <button class="absolute -bottom-2 -right-2 bg-[#52bc1a] text-white p-2.5 rounded-2xl shadow-lg border-4 border-white hover:scale-110 transition"><i data-lucide="camera" size="16"></i></button>
+                        </div>
+                        <h4 id="u-name" class="text-2xl font-bold leading-none mb-1 text-slate-800">Pelanggan Umum</h4>
+                        <p id="u-role" class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Akun Tamu / Guest</p>
+                    </div>
+
+                    <div id="reg-box" class="bg-white p-10 rounded-[45px] shadow-xl border border-slate-50">
+                        <div class="flex justify-between items-center mb-8">
+                            <h4 class="font-bold text-xl text-slate-800">Daftar Member Baru</h4>
+                            <div class="flex gap-2">
+                                <button onclick="openLogin('member')" class="p-3 bg-emerald-50 text-[#52bc1a] rounded-2xl shadow-sm hover:bg-emerald-100 transition" title="Login Member"><i data-lucide="user"></i></button>
+                                <button onclick="openLogin('staff')" class="p-3 bg-slate-900 text-white rounded-2xl shadow-sm hover:bg-slate-800 transition" title="Akses Pegawai"><i data-lucide="briefcase"></i></button>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                <input type="text" id="reg-nama" class="p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Nama Lengkap">
+                                <input type="tel" id="reg-wa" class="p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="No. WhatsApp (08..)">
+                            </div>
+                            <input type="email" id="reg-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Email">
+                            <input type="password" id="reg-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Buat Kata Sandi">
+                            <button onclick="handleRegister()" class="w-full btn-primary py-5 rounded-2xl font-bold shadow-lg shadow-emerald-100">Gabung & Klaim Promo Member</button>
+                            <button onclick="forgotPassword()" class="w-full text-[10px] text-slate-400 font-bold uppercase tracking-widest text-center mt-3 hover:text-slate-600 transition">Lupa Kata Sandi?</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: HISTORY -->
+            <div id="view-history" class="page-view">
+                <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800"><i data-lucide="history" class="text-slate-400"></i> Jejak Pesanan</h2>
+                <div id="history-list" class="space-y-4">
+                    <div class="text-center py-20 opacity-30 italic text-sm">Masuk akun untuk melihat riwayat belanja Anda.</div>
+                </div>
+            </div>
+
+            <!-- Views for Staff (hidden by default) -->
+            <div id="view-pegawai" class="page-view">
+                <div class="max-w-2xl mx-auto bg-white p-10 rounded-[45px] shadow-xl border border-slate-50">
+                    <h3 class="text-xl font-bold mb-8 text-slate-800">Absensi Geofencing</h3>
+                    <div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100 text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 text-[#52bc1a] shadow-sm"><i data-lucide="map-pin"></i></div>
+                        <p class="text-sm text-slate-500 mb-8 leading-relaxed px-4">Pastikan Anda berada di area Rumah Makan sebelum menekan tombol masuk.</p>
+                        <button onclick="handleAbsensi()" class="w-full btn-primary py-5 rounded-2xl font-bold shadow-xl">Mulai Presensi</button>
+                        <p id="geo-status" class="text-[10px] mt-6 font-bold uppercase tracking-[0.2em] text-slate-400">Status GPS: Menunggu...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other internal views -->
+            <div id="view-koki" class="page-view"><div id="list-dapur" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
+            <div id="view-kasir" class="page-view"><div id="list-kasir" class="space-y-4"></div></div>
+            <div id="view-owner" class="page-view"><div id="owner-canvas"></div></div>
+
+        </main>
+
+        <!-- Mobile Nav Pill -->
+        <nav class="lg:hidden bottom-pill">
+            <button onclick="router('dashboard')" id="nav-dashboard" class="nav-btn active">
+                <i data-lucide="home" size="20"></i>
+                <span class="text-[9px] mt-1 font-bold">Home</span>
+            </button>
+            <button onclick="router('history')" id="nav-history" class="nav-btn">
+                <i data-lucide="history" size="20"></i>
+                <span class="text-[9px] mt-1 font-bold">Riwayat</span>
+            </button>
+            <button onclick="toggleCart()" class="nav-btn">
+                <div class="cart-center">
+                    <i data-lucide="shopping-basket" size="24"></i>
+                    <span id="nav-cart-badge" class="absolute top-2 right-1 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white font-black hidden">0</span>
+                </div>
+            </button>
+            <button onclick="router('online')" id="nav-online" class="nav-btn">
+                <i data-lucide="bike" size="20"></i>
+                <span class="text-[9px] mt-1 font-bold">Online</span>
+            </button>
+            <button onclick="router('settings')" id="nav-settings" class="nav-btn">
+                <i data-lucide="user" size="20"></i>
+                <span class="text-[9px] mt-1 font-bold">Akun</span>
+            </button>
+        </nav>
+
+        <!-- Overlays -->
+        <div id="cart-overlay" class="slide-overlay flex flex-col">
+            <div class="p-8 flex justify-between items-center bg-white border-b border-slate-50">
+                <h3 class="text-2xl font-bold text-slate-800">Keranjang</h3>
+                <button onclick="closeAllOverlays()" class="p-2.5 bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition"><i data-lucide="x" size="20"></i></button>
+            </div>
+            <div id="cart-list" class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar"></div>
+            <div class="p-8 border-t bg-slate-50 rounded-t-[40px] shadow-2xl">
+                <div class="flex justify-between mb-8 px-2">
+                    <span class="font-bold text-slate-400 text-xs uppercase tracking-widest">Total Tagihan</span>
+                    <span id="cart-total" class="text-2xl font-black text-slate-800">Rp 0</span>
+                </div>
+                <button onclick="checkout()" class="w-full btn-primary py-6 rounded-3xl font-bold shadow-xl">Proses Pesanan</button>
+            </div>
+        </div>
+
+        <div id="detail-overlay" class="slide-overlay flex flex-col bg-white">
+            <div id="detail-content" class="flex-1 overflow-y-auto no-scrollbar pb-32"></div>
+            <div class="p-6 border-t bg-white absolute bottom-0 left-0 right-0 flex gap-4">
+                <div class="flex items-center gap-6 bg-slate-100 px-6 py-4 rounded-2xl">
+                    <button onclick="adjustDetailQty(-1)" class="text-slate-400"><i data-lucide="minus" size="20"></i></button>
+                    <span id="detail-qty" class="font-bold text-xl w-6 text-center">1</span>
+                    <button onclick="adjustDetailQty(1)" class="text-[#52bc1a]"><i data-lucide="plus" size="20"></i></button>
+                </div>
+                <button id="btn-detail-add" class="btn-primary flex-1 py-4 rounded-2xl font-bold text-sm shadow-xl">Tambahkan</button>
+                <button onclick="closeAllOverlays()" class="p-4 bg-slate-100 rounded-2xl text-slate-400"><i data-lucide="x" size="20"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative border border-white/20">
+            <button onclick="closeModal('modal-login')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition"><i data-lucide="x" size="18"></i></button>
+            <div class="text-center mb-10 pt-4">
+                <div id="login-icon" class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="user" size="32"></i>
+                </div>
+                <h3 id="login-title" class="text-2xl font-bold text-slate-800">Login Member</h3>
+                <p id="login-desc" class="text-slate-400 text-xs mt-2 px-6">Nikmati akses pemesanan lebih cepat dan promo spesial.</p>
+            </div>
+            <div class="space-y-4">
+                <input type="email" id="l-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Email Terdaftar">
+                <input type="password" id="l-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Password Akun">
+                <button onclick="processLogin()" class="w-full btn-primary py-5 rounded-2xl font-bold shadow-xl mt-6">Masuk Sekarang</button>
+                <p class="text-center text-[10px] text-slate-300 mt-4 italic font-medium tracking-tight">RM Pangkalan Natural Food Ecosystem</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-40 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white px-8 py-4 rounded-3xl opacity-0 pointer-events-none transition-all duration-300 z-[9999] shadow-2xl text-[10px] font-black uppercase tracking-widest border border-white/10">
+        <span id="toast-msg">Notif...</span>
+    </div>
+
+    <script>
+        const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwN3BrT3us2zAikLxg5T9wmwi8yur5NDXdPU8o45Gn1WBv3uRl9uG4MxE1elZ47vchH/exec";
+        
+        let state = {
+            menu: JSON.parse(localStorage.getItem('p_menu')) || [],
+            stok: [], transaksi: [], cart: [],
+            user: JSON.parse(localStorage.getItem('p_user')) || null,
+            detailProduct: null, detailQty: 1, currentRoleLogin: 'member'
+        };
+
+        window.onload = () => {
+            lucide.createIcons();
+            if (state.menu.length > 0) renderMenuGrid(state.menu);
+            updateAuthDisplay();
+            syncData();
+        };
+
+        // --- NAVIGATION ---
+        function router(view) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.bottom-pill .nav-btn').forEach(b => b.classList.remove('active'));
+            
+            const target = document.getElementById(`view-${view}`);
+            if (target) {
+                target.classList.add('active');
+                const sideBtn = document.getElementById(`side-${view}`); if(sideBtn) sideBtn.classList.add('active');
+                const navBtn = document.getElementById(`nav-${view}`); if(navBtn) navBtn.classList.add('active');
+                document.getElementById('page-title').innerText = view === 'dashboard' ? 'Selamat Datang' : view.toUpperCase();
+            }
+            if(view === 'dashboard') renderMenuGrid(state.menu); 
+            if(view === 'history') renderHistory();
+            if(view === 'pegawai') renderPegawaiView();
+            
+            closeAllOverlays();
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- OVERLAYS ---
+        function toggleCart() {
+            const overlay = document.getElementById('cart-overlay');
+            const backdrop = document.getElementById('global-backdrop');
+            overlay.classList.toggle('open');
+            backdrop.classList.toggle('show');
+            lucide.createIcons();
+        }
+
+        function closeAllOverlays() {
+            document.querySelectorAll('.slide-overlay').forEach(el => el.classList.remove('open'));
+            document.getElementById('global-backdrop').classList.remove('show');
+        }
+
+        // --- MENU & PRODUCTS ---
+        function renderMenuGrid(items = state.menu) {
+            const grid = document.getElementById('grid-menu');
+            if(!grid) return;
+            grid.innerHTML = items.filter(m => m.Status === 'Aktif').map(item => `
+                <div class="bg-white p-3 lg:p-5 rounded-[35px] shadow-sm hover:shadow-xl transition-all duration-300 group border border-transparent hover:border-emerald-50">
+                    <div onclick="openDetail('${item.ID}')" class="h-32 lg:h-44 bg-slate-100 rounded-[22px] overflow-hidden mb-4 cursor-pointer relative shadow-inner">
+                        <img src="${item.ImageURL.includes('dummy') ? 'https://images.unsplash.com/photo-1541014741259-df529411b96a?w=400' : item.ImageURL}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                    </div>
+                    <div>
+                        <span class="text-[8px] font-black uppercase text-[#52bc1a] bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">${item.Kategori}</span>
+                        <h4 onclick="openDetail('${item.ID}')" class="font-bold text-slate-800 mt-2 line-clamp-1 cursor-pointer text-sm lg:text-base">${item.Nama}</h4>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-sm font-black text-slate-800 tracking-tight">Rp ${(item.Harga / 1000).toFixed(0)}k</span>
+                            <button onclick="addToCart('${item.ID}')" class="bg-[#52bc1a] text-white p-2 rounded-xl shadow-lg active:scale-90 transition">
+                                <i data-lucide="plus" size="18"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function openDetail(id) {
+            const item = state.menu.find(m => m.ID === id);
+            state.detailProduct = item;
+            state.detailQty = 1;
+            document.getElementById('global-backdrop').classList.add('show');
+            document.getElementById('detail-content').innerHTML = `
+                <div class="h-[350px] lg:h-[420px] bg-slate-200 relative shadow-inner">
+                    <img src="${item.ImageURL}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent"></div>
+                </div>
+                <div class="p-8 lg:p-12 -mt-12 relative bg-white rounded-t-[50px] shadow-2xl">
+                    <span class="bg-emerald-50 text-[#52bc1a] px-3 py-1 rounded-full text-[10px] font-black uppercase border border-emerald-100">${item.Kategori}</span>
+                    <h2 class="hero-font text-4xl lg:text-5xl font-bold mt-4 text-slate-800 leading-none">${item.Nama}</h2>
+                    <p class="text-3xl font-black text-[#52bc1a] mt-3 mb-10">Rp ${item.Harga.toLocaleString('id-ID')}</p>
+                    <div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100 mb-20">
+                        <h4 class="font-bold text-slate-800 mb-2 flex items-center gap-2"><i data-lucide="info" size="14"></i> Deskripsi Menu</h4>
+                        <p class="text-sm text-slate-500 leading-relaxed">${item.Deskripsi}</p>
+                    </div>
+                </div>
+            `;
+            updateDetailUI();
+            document.getElementById('detail-overlay').classList.add('open');
+            lucide.createIcons();
+        }
+
+        // --- AUTH & ACCOUNT ---
+        function openLogin(role) {
+            state.currentRoleLogin = role;
+            const modal = document.getElementById('modal-login');
+            const icon = document.getElementById('login-icon');
+            const title = document.getElementById('login-title');
+            if (role === 'staff') {
+                icon.innerHTML = '<i data-lucide="briefcase" size="32"></i>';
+                icon.className = 'w-20 h-20 bg-slate-900 text-white rounded-[30px] flex items-center justify-center mx-auto mb-4';
+                title.innerText = 'Login Staf / Owner';
+            } else {
+                icon.innerHTML = '<i data-lucide="user" size="32"></i>';
+                icon.className = 'w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4';
+                title.innerText = 'Login Member';
+            }
+            modal.classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function updateAuthDisplay() {
+            const isU = state.user !== null;
+            const a = isU ? state.user.FotoURL || `https://ui-avatars.com/api/?name=${state.user.Nama}&background=52bc1a&color=fff` : `https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff`;
+            document.getElementById('u-avatar').src = a;
+            document.getElementById('header-avatar').src = a;
+            document.getElementById('u-name').innerText = isU ? state.user.Nama : "Pelanggan Umum";
+            document.getElementById('u-role').innerText = isU ? state.user.Role : "Guest Account";
+            document.getElementById('reg-box').classList.toggle('hidden', isU);
+            document.getElementById('auth-text-side').innerText = isU ? "Keluar Member" : "Masuk Member";
+            if(isU && ['owner','kasir','koki','waiter'].includes(state.user.Role)) document.getElementById('nav-staff').classList.remove('hidden');
+        }
+
+        function handleRegister() {
+            const data = {
+                nama: document.getElementById('reg-nama').value,
+                email: document.getElementById('reg-email').value,
+                noWa: document.getElementById('reg-wa').value,
+                password: document.getElementById('reg-pass').value
+            };
+            if(!data.email || !data.password) return notify("Lengkapi formulir!");
+            notify("Mendaftarkan... Cek Email Anda Segera.");
+        }
+
+        function forgotPassword() {
+            const email = prompt("Masukkan email Anda:");
+            if(email) notify("Instruksi reset terkirim ke email.");
+        }
+
+        // --- DATA & SYNC ---
+        async function syncData() {
+            try {
+                const r = await fetch(localStorage.getItem('p_api_url') || DEFAULT_API_URL, { method: 'POST', body: JSON.stringify({ action: 'sync_all', data: {} }) });
+                const res = await r.json();
+                if(res.status === 'success') {
+                    state.menu = res.data.Menu; state.transaksi = res.data.Transaksi;
+                    localStorage.setItem('p_menu', JSON.stringify(state.menu));
+                    localStorage.setItem('p_users', JSON.stringify(res.data.Users));
+                    renderMenuGrid(state.menu);
+                    document.getElementById('sync-indicator').className = 'w-2 h-2 rounded-full bg-[#52bc1a]';
+                }
+            } catch(e) { console.warn("Offline"); }
+        }
+
+        // --- UTILS ---
+        function scrollToGrid() { document.getElementById('grid-menu').scrollIntoView({ behavior: 'smooth' }); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function notify(msg) { const t = document.getElementById('toast'); document.getElementById('toast-msg').innerText = msg; t.classList.remove('opacity-0'); setTimeout(() => t.classList.add('opacity-0'), 3000); }
+        function adjustDetailQty(d) { state.detailQty = Math.max(1, state.detailQty + d); updateDetailUI(); }
+        function updateDetailUI() {
+            document.getElementById('detail-qty').innerText = state.detailQty;
+            const p = state.detailProduct.Harga * state.detailQty;
+            document.getElementById('btn-detail-add').innerText = `Masukan Pesanan • Rp ${p.toLocaleString('id-ID')}`;
+            document.getElementById('btn-detail-add').onclick = () => { for(let i=0; i<state.detailQty; i++) addToCart(state.detailProduct.ID, true); closeAllOverlays(); };
+        }
+        function addToCart(id, s = false) {
+            const i = state.menu.find(m => m.ID === id);
+            const e = state.cart.find(c => c.ID === id);
+            if (e) e.qty++; else state.cart.push({...i, qty: 1});
+            updateCartUI(); if(!s) notify(i.Nama + " ditambah.");
+        }
+        function updateCartUI() {
+            const t = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0);
+            const c = state.cart.reduce((a, b) => a + b.qty, 0);
+            document.getElementById('cart-total').innerText = "Rp " + t.toLocaleString();
+            document.querySelectorAll('#nav-cart-badge, #sidebar-cart-count').forEach(el => { el.innerText = c; el.classList.toggle('hidden', c === 0); });
+            document.getElementById('cart-list').innerHTML = state.cart.map(i => `
+                <div class="flex items-center gap-5 p-5 bg-white rounded-[25px] border border-slate-100 shadow-sm">
+                    <img src="${i.ImageURL}" class="w-14 h-14 rounded-xl object-cover shadow-sm">
+                    <div class="flex-1"><p class="text-xs font-bold text-slate-800 line-clamp-1">${i.Nama}</p><p class="text-[10px] font-black text-[#52bc1a]">Rp ${i.Harga.toLocaleString()}</p></div>
+                    <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl"><button onclick="adjustQty('${i.ID}',-1)" class="p-1 text-slate-300 hover:text-red-500"><i data-lucide="minus-circle" size="18"></i></button><span class="text-xs font-black w-4 text-center">${i.qty}</span><button onclick="adjustQty('${i.ID}',1)" class="p-1 text-[#52bc1a] hover:scale-110"><i data-lucide="plus-circle" size="18"></i></button></div>
+                </div>
+            `).join('') || '<div class="text-center py-10 opacity-20 text-xs font-bold">Keranjang Belum Terisi</div>';
+            lucide.createIcons();
+        }
+        function adjustQty(id, d) { const i = state.cart.find(c => c.ID === id); i.qty += d; if (i.qty <= 0) state.cart = state.cart.filter(c => c.ID !== id); updateCartUI(); }
+        function filterMenu(c) {
+            router('dashboard');
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+            const sideBtn = document.getElementById(`cat-${c}`); if(sideBtn) sideBtn.classList.add('active');
+            renderMenuGrid(c === 'all' ? state.menu : state.menu.filter(m => m.Kategori === c));
+        }
+        function renderHistory() {
+            const list = document.getElementById('history-list');
+            const identitas = state.user ? state.user.Nama : 'Umum';
+            const userOrders = state.transaksi.filter(t => t.Pelanggan === identitas);
+            list.innerHTML = userOrders.length ? [...userOrders].reverse().map(o => `
+                <div class="bg-white p-6 rounded-[30px] border border-slate-50 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-[#52bc1a]/30"></div>
+                    <div class="flex justify-between items-start mb-4">
+                        <div><p class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">#${o.ID_Transaksi.slice(-8)}</p>
+                        <p class="text-[10px] text-slate-400">${new Date(o.Tanggal).toLocaleDateString()} • ${new Date(o.Tanggal).toLocaleTimeString()}</p></div>
+                        <span class="text-[8px] font-black px-3 py-1.5 rounded-full ${o.Status==='Lunas'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'} uppercase">${o.Status}</span>
+                    </div>
+                    <div class="flex justify-between items-end border-t border-slate-50 pt-4 mt-2">
+                        <span class="text-[10px] font-bold text-slate-400">NOMINAL BAYAR</span>
+                        <span class="font-black text-slate-800 text-lg">Rp ${o.Total.toLocaleString()}</span>
+                    </div>
+                </div>
+            `).join('') : '<div class="text-center py-20 opacity-30 italic text-sm">Tidak ada riwayat belanja.</div>';
+        }
+        function handleAuth() { if(state.user) { localStorage.removeItem('p_user'); location.reload(); } else openLogin('member'); }
+        async function processLogin() {
+            const email = document.getElementById('l-email').value;
+            const pass = document.getElementById('l-pass').value;
+            const users = JSON.parse(localStorage.getItem('p_users')) || [];
+            const found = users.find(u => u.Email === email && u.Password === pass);
+            if (found) { state.user = found; localStorage.setItem('p_user', JSON.stringify(found)); notify("Login Berhasil!"); document.getElementById('modal-login').classList.add('hidden'); updateAuthDisplay(); router('dashboard'); } else { notify("Akses ditolak."); }
+        }
+    </script>
+</body>
+</html>
