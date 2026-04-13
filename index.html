@@ -123,7 +123,7 @@
             <nav class="flex-1 space-y-1 overflow-y-auto no-scrollbar">
                 <p class="text-[10px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest">Aktivitas</p>
                 
-                <!-- Beranda Group (Urutan Permintaan) -->
+                <!-- Beranda Group (Urutan Gambar Referensi) -->
                 <div>
                     <button onclick="toggleSidebarMenu()" id="side-dashboard" class="sidebar-item active w-full flex items-center justify-between p-4 hover:bg-slate-50 transition">
                         <div class="flex items-center gap-4">
@@ -133,37 +133,38 @@
                     </button>
                     <!-- Sub-Kategori Menu Berikon -->
                     <div id="category-submenu" class="max-h-0 bg-slate-50/50 rounded-2xl mx-2 my-1">
-                        <button onclick="filterMenu('all')" class="submenu-item" id="sub-all">
+                        <button onclick="filterMenu('all')" class="submenu-item group" id="sub-all">
                             <i data-lucide="layers" size="14"></i> Semua Menu
                         </button>
-                        <button onclick="filterMenu('Makanan')" class="submenu-item" id="sub-Makanan">
+                        <button onclick="filterMenu('Makanan')" class="submenu-item group" id="sub-Makanan">
                             <i data-lucide="utensils" size="14"></i> Makanan
                         </button>
-                        <button onclick="filterMenu('Segeran')" class="submenu-item" id="sub-Segeran">
+                        <button onclick="filterMenu('Segeran')" class="submenu-item group" id="sub-Segeran">
                             <i data-lucide="glass-water" size="14"></i> Segeran
                         </button>
-                        <button onclick="filterMenu('Wedangan')" class="submenu-item" id="sub-Wedangan">
+                        <button onclick="filterMenu('Wedangan')" class="submenu-item group" id="sub-Wedangan">
                             <i data-lucide="coffee" size="14"></i> Wedangan
                         </button>
                     </div>
                 </div>
 
                 <button onclick="router('history')" id="side-history" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600">
-                    <i data-lucide="history" size="20"></i> <span class="text-sm font-semibold">Riwayat Pesanan</span>
+                    <i data-lucide="history" size="20"></i> <span class="text-sm font-semibold text-inherit">Riwayat Pesanan</span>
                 </button>
                 <button onclick="toggleCart()" id="side-cart" class="sidebar-item w-full flex items-center justify-between p-4 hover:bg-slate-50 text-slate-600">
                     <div class="flex items-center gap-4">
-                        <i data-lucide="shopping-basket" size="20"></i> <span class="text-sm font-semibold">Keranjang</span>
+                        <i data-lucide="shopping-basket" size="20"></i> <span class="text-sm font-semibold text-inherit">Keranjang</span>
                     </div>
                     <span id="sidebar-cart-count" class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold hidden">0</span>
                 </button>
                 <button onclick="router('online')" id="side-online" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600">
-                    <i data-lucide="bike" size="20"></i> <span class="text-sm font-semibold">Order Online</span>
+                    <i data-lucide="bike" size="20"></i> <span class="text-sm font-semibold text-inherit">Order Online</span>
                 </button>
                 <button onclick="router('settings')" id="side-profile" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600">
-                    <i data-lucide="user" size="20"></i> <span class="text-sm font-semibold">Member Area</span>
+                    <i data-lucide="user" size="20"></i> <span class="text-sm font-semibold text-inherit">Member Area</span>
                 </button>
                 
+                <!-- Staf Section (Internal) -->
                 <div id="nav-staff" class="hidden pt-6 mt-6 border-t border-slate-50 space-y-1">
                     <p class="text-[10px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest">Backoffice</p>
                     <button onclick="router('pegawai')" id="side-pegawai" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600"><i data-lucide="user-cog" size="20"></i> <span class="text-sm">Absensi Staf</span></button>
@@ -171,13 +172,11 @@
                 </div>
             </nav>
 
+            <!-- Akses Staf Langsung (Sistem) -->
             <div class="pt-6 border-t border-slate-50">
                 <p class="text-[9px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest">Sistem</p>
-                <button onclick="router('settings')" id="side-settings" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-500 transition">
-                    <i data-lucide="settings" size="20"></i> <span class="text-sm font-semibold">Setelan</span>
-                </button>
-                <button id="btn-auth-side" onclick="handleAuth()" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-red-50 text-red-500 transition group">
-                    <i data-lucide="log-in" size="20"></i> <span id="auth-text-side" class="text-sm font-bold">Masuk Member</span>
+                <button id="btn-auth-staf" onclick="openLogin('staff')" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-900 hover:text-white transition group text-slate-500">
+                    <i data-lucide="briefcase" size="20" class="group-hover:translate-x-1 transition"></i> <span id="auth-text-side" class="text-sm font-bold">Akses Staf</span>
                 </button>
             </div>
         </aside>
@@ -186,7 +185,7 @@
         <main class="flex-1 p-4 lg:p-10 pb-36 lg:pb-10 overflow-y-auto relative">
             <header class="flex justify-between items-center mb-8">
                 <div>
-                    <h2 id="page-title" class="text-xl lg:text-2xl font-bold text-slate-800 leading-none tracking-tight">Selamat Datang</h2>
+                    <h2 id="page-title" class="text-xl lg:text-2xl font-bold text-slate-800 leading-none tracking-tight text-inherit">Selamat Datang</h2>
                     <p class="text-[10px] text-slate-400 mt-2 flex items-center gap-2" id="sync-info">
                         <span id="sync-indicator" class="w-2 h-2 rounded-full bg-slate-300"></span> Memulai...
                     </p>
@@ -204,7 +203,7 @@
                     <img id="hero-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent flex items-center px-8 lg:px-20">
                         <div class="max-w-[280px] lg:max-w-lg">
-                            <p class="text-[#ccff00] font-bold tracking-[0.3em] text-[8px] lg:text-[10px] uppercase mb-2 lg:mb-4">Best Nutrition With</p>
+                            <p class="text-[#ccff00] font-bold tracking-[0.3em] text-[8px] lg:text-[10px] uppercase mb-4">Best Nutrition With</p>
                             <h2 class="hero-font text-3xl lg:text-7xl text-white italic leading-none mb-6 lg:mb-10 text-[1.75rem]">Pangkalan <br><span class="text-[#ccff00]">Natural Resto</span></h2>
                             <button onclick="scrollToGrid()" class="btn-primary px-8 lg:px-12 py-3 lg:py-5 rounded-2xl font-bold text-[10px] lg:text-sm shadow-xl transition">Lihat Menu Makan</button>
                         </div>
@@ -221,13 +220,7 @@
                 <div id="grid-menu" class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8"></div>
             </div>
 
-            <!-- VIEW: HISTORY -->
-            <div id="view-history" class="page-view">
-                <h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800"><i data-lucide="history" class="text-slate-400"></i> Jejak Pesanan</h2>
-                <div id="history-list" class="space-y-4"></div>
-            </div>
-
-            <!-- VIEW: SETTINGS -->
+            <!-- VIEW: SETTINGS (Member Area) -->
             <div id="view-settings" class="page-view">
                 <div class="max-w-2xl mx-auto space-y-8">
                     <div class="bg-white p-10 rounded-[45px] shadow-xl text-center border border-slate-50 relative overflow-hidden">
@@ -243,10 +236,10 @@
 
                     <div id="reg-box" class="bg-white p-10 rounded-[45px] shadow-xl border border-slate-50">
                         <div class="flex justify-between items-center mb-8">
-                            <h4 class="font-bold text-xl text-slate-800">Daftar Member Baru</h4>
+                            <h4 class="font-bold text-xl text-slate-800 text-inherit">Daftar Member Baru</h4>
                             <div class="flex gap-2">
                                 <button onclick="openLogin('member')" class="p-3 bg-emerald-50 text-[#52bc1a] rounded-2xl shadow-sm hover:bg-emerald-100 transition" title="Login Member"><i data-lucide="user"></i></button>
-                                <button onclick="openLogin('staff')" class="p-3 bg-slate-900 text-white rounded-2xl shadow-sm hover:bg-slate-800 transition" title="Akses Pegawai"><i data-lucide="briefcase"></i></button>
+                                <button onclick="openLogin('staff')" class="p-3 bg-slate-900 text-white rounded-2xl shadow-sm hover:bg-slate-800 transition" title="Akses Staf"><i data-lucide="briefcase"></i></button>
                             </div>
                         </div>
                         <div class="space-y-4">
@@ -263,11 +256,13 @@
                 </div>
             </div>
 
+            <!-- Supporting Pages -->
+            <div id="view-history" class="page-view"><h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800"><i data-lucide="history" class="text-slate-400"></i> Jejak Pesanan</h2><div id="history-list" class="space-y-4"></div></div>
+            <div id="view-online" class="page-view"><div class="p-10 bg-white rounded-[40px] shadow-xl text-center"><h2 class="text-2xl font-bold text-slate-800">Layanan Delivery</h2><p class="mt-4 text-slate-500">Radius antar 1km aktif pukul 09.00 - 21.00.</p></div></div>
             <div id="view-pegawai" class="page-view"><div class="max-w-2xl mx-auto bg-white p-10 rounded-[45px] shadow-xl border border-slate-50 text-center"><h3 class="text-xl font-bold mb-8 text-slate-800 text-center">Presensi Staf</h3><button onclick="openCameraModal('absen')" class="w-full btn-primary py-5 rounded-2xl font-bold shadow-lg">Kirim Lokasi Absen</button><p id="geo-status" class="text-[10px] mt-6 font-bold uppercase tracking-widest text-slate-400">GPS: Menunggu...</p></div></div>
             <div id="view-kasir" class="page-view"><div id="list-kasir" class="space-y-4"></div></div>
             <div id="view-koki" class="page-view"><div id="list-dapur" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div></div>
             <div id="view-owner" class="page-view"><div id="owner-canvas" class="p-4"></div></div>
-            <div id="view-online" class="page-view"><div class="p-10 bg-white rounded-[40px] shadow-xl text-center"><h2 class="text-2xl font-bold text-slate-800">Layanan Delivery</h2><p class="mt-4 text-slate-500">Radius antar 1km aktif pukul 09.00 - 21.00.</p></div></div>
         </main>
 
         <nav class="lg:hidden bottom-pill">
@@ -289,7 +284,6 @@
                 <h3 class="text-2xl font-bold text-slate-800">Keranjang</h3>
                 <button onclick="closeAllOverlays()" class="p-2.5 bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition"><i data-lucide="x" size="20"></i></button>
             </div>
-            
             <div class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar">
                 <div id="cart-list" class="space-y-4"></div>
                 <div id="checkout-form" class="hidden pt-6 mt-6 border-t border-slate-100 space-y-6">
@@ -322,7 +316,7 @@
             </div>
             <div class="p-8 border-t bg-slate-50 rounded-t-[40px] shadow-2xl">
                 <div class="flex justify-between mb-6 px-2">
-                    <span class="font-bold text-slate-400 text-xs uppercase tracking-widest font-black">Tagihan Total</span>
+                    <span class="font-bold text-slate-400 text-xs uppercase tracking-widest font-black text-inherit">Tagihan Total</span>
                     <span id="cart-total" class="text-2xl font-black text-slate-800 font-bold">Rp 0</span>
                 </div>
                 <button onclick="handleCheckoutStep()" id="btn-main-checkout" class="w-full btn-primary py-6 rounded-3xl font-bold shadow-xl">Lanjut ke Detail</button>
@@ -342,11 +336,11 @@
             </div>
         </div>
 
-        <!-- Camera Modal -->
+        <!-- CAMERA MODAL -->
         <div id="camera-modal" class="fixed inset-0 bg-black/90 hidden flex items-center justify-center p-6 backdrop-blur-md">
             <div class="bg-white w-full max-w-sm rounded-[40px] p-8 text-center shadow-2xl">
-                <h3 class="text-xl font-bold mb-2">Verifikasi Selfie</h3>
-                <p id="camera-hint" class="text-xs text-slate-400 mb-6">Bukti pendaftaran/pesanan online.</p>
+                <h3 class="text-xl font-bold mb-2 text-inherit">Verifikasi Selfie</h3>
+                <p id="camera-hint" class="text-xs text-slate-400 mb-6 text-inherit">Bukti pendaftaran/pesanan online.</p>
                 <div class="video-container mx-auto">
                     <video id="webcam" autoplay playsinline></video>
                     <canvas id="photo-canvas" class="hidden"></canvas>
@@ -358,6 +352,7 @@
             </div>
         </div>
 
+        <!-- MODAL LOGIN -->
         <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6">
             <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative border border-white/20">
                 <button onclick="closeModal('modal-login')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition"><i data-lucide="x" size="18"></i></button>
@@ -365,8 +360,8 @@
                     <div id="login-icon" class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4">
                         <i data-lucide="user" size="32"></i>
                     </div>
-                    <h3 id="login-title" class="text-2xl font-bold text-slate-800">Login</h3>
-                    <p id="login-desc" class="text-slate-400 text-xs mt-2 px-6">Email / Nomor WhatsApp</p>
+                    <h3 id="login-title" class="text-2xl font-bold text-slate-800 text-inherit">Login</h3>
+                    <p id="login-desc" class="text-slate-400 text-xs mt-2 px-6 text-inherit">Email / Nomor WhatsApp</p>
                 </div>
                 <div class="space-y-4">
                     <input type="text" id="l-credential" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm" placeholder="Email atau WhatsApp">
@@ -398,7 +393,7 @@
             const backdrop = document.getElementById('global-backdrop');
             if(backdrop) {
                 backdrop.classList.remove('show');
-                backdrop.style.display = 'none'; // Tambahan untuk memastikan klik tidak terhalang
+                backdrop.style.display = 'none';
             }
         }
 
@@ -420,8 +415,8 @@
         const heroImages = {
             all: "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1200",
             Makanan: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=1200",
-            Segeran: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?auto=format&fit=crop&q=80&w=1200",
-            Wedangan: "https://images.unsplash.com/photo-1544787210-2827448b326c?auto=format&fit=crop&q=80&w=1200"
+            Segeran: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&q=80&w=1200",
+            Wedangan: "https://images.unsplash.com/photo-1497515114629-f71d768fd07c?auto=format&fit=crop&q=80&w=1200"
         };
 
         // --- RENDERERS ---
@@ -434,10 +429,10 @@
                         <img src="${item.ImageURL}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" onerror="this.src='https://images.unsplash.com/photo-1541014741259-df529411b96a?w=400'">
                     </div>
                     <div>
-                        <span class="text-[8px] font-black uppercase text-[#52bc1a] bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">${item.Kategori}</span>
-                        <h4 onclick="openDetail('${item.ID}')" class="font-bold text-slate-800 mt-2 line-clamp-1 cursor-pointer text-sm lg:text-base leading-tight font-black">${item.Nama}</h4>
+                        <span class="text-[8px] font-black uppercase text-[#52bc1a] bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100 text-inherit">${item.Kategori}</span>
+                        <h4 onclick="openDetail('${item.ID}')" class="font-bold text-slate-800 mt-2 line-clamp-1 cursor-pointer text-sm lg:text-base leading-tight font-black text-inherit">${item.Nama}</h4>
                         <div class="flex justify-between items-center mt-3">
-                            <span class="text-sm font-black text-slate-800 tracking-tight font-bold">Rp ${(item.Harga / 1000).toFixed(0)}k</span>
+                            <span class="text-sm font-black text-slate-800 tracking-tight font-bold text-inherit">Rp ${(item.Harga / 1000).toFixed(0)}k</span>
                             <button onclick="addToCart('${item.ID}')" class="bg-[#52bc1a] text-white p-2 rounded-xl shadow active:scale-90 transition"><i data-lucide="plus" size="18"></i></button>
                         </div>
                     </div></div>`).join('');
@@ -474,29 +469,23 @@
         }
 
         function router(view) {
-            // Sembunyikan semua halaman
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-            // Hapus status aktif dari sidebar
             document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.submenu-item').forEach(b => b.classList.remove('active'));
-            // Hapus status aktif dari bottom nav
             document.querySelectorAll('.bottom-pill .nav-btn').forEach(b => b.classList.remove('active'));
             
             const target = document.getElementById(`view-${view}`);
             if (target) {
                 target.classList.add('active');
-                
-                // Set status aktif pada UI
                 const sideBtn = document.getElementById(`side-${view}`); if(sideBtn) sideBtn.classList.add('active');
                 const navBtn = document.getElementById(`nav-${view}`); if(navBtn) navBtn.classList.add('active');
-                
                 document.getElementById('page-title').innerText = (view === 'dashboard') ? 'Beranda' : view.toUpperCase();
             }
 
             if(view === 'dashboard') {
-                document.getElementById('hero-img').src = heroImages.all;
+                const img = document.getElementById('hero-img');
+                if(img) img.src = heroImages.all;
                 renderMenuGrid(state.menu);
-                // Highlight sub-menu "Semua" di sidebar jika terbuka
                 const subAll = document.getElementById('sub-all'); if(subAll) subAll.classList.add('active');
             }
             
@@ -509,16 +498,13 @@
 
         // --- DYNAMIC HERO & FILTER ---
         function filterMenu(c) {
-            // Pastikan kita berada di halaman dashboard
             if(!document.getElementById('view-dashboard').classList.contains('active')) {
                 router('dashboard');
             }
             
-            // Highlight sub-menu yang aktif
             document.querySelectorAll('.submenu-item').forEach(b => b.classList.remove('active'));
             const subBtn = document.getElementById(`sub-${c}`); if(subBtn) subBtn.classList.add('active');
 
-            // Ubah Gambar Hero dengan efek transisi sederhana
             const img = document.getElementById('hero-img');
             if(img) {
                 img.style.opacity = 0.5;
@@ -528,7 +514,6 @@
                 }, 200);
             }
 
-            // Update filter di mobile
             document.querySelectorAll('.filter-btn-m').forEach(btn => {
                 if(btn.innerText.toLowerCase() === c.toLowerCase() || (c === 'all' && btn.innerText.toLowerCase() === 'semua')) {
                     btn.classList.add('active');
@@ -542,17 +527,20 @@
 
         // --- AUTH & LOGIN ---
         async function processLogin() {
-            const cred = document.getElementById('l-credential').value;
-            const pass = document.getElementById('l-pass').value;
+            const credInput = document.getElementById('l-credential');
+            const passInput = document.getElementById('l-pass');
+            if(!credInput || !passInput) return;
+
+            const cred = credInput.value.trim();
+            const pass = passInput.value.trim();
             const users = JSON.parse(localStorage.getItem('p_users')) || [];
             
-            // Mendukung login Email atau WhatsApp
-            const found = users.find(u => (u.Email === cred || u.NoWA === cred) && u.Password === pass);
+            const found = users.find(u => (String(u.Email) === cred || String(u.NoWA) === cred) && String(u.Password) === pass);
             
             if (found) { 
                 state.user = found; 
                 localStorage.setItem('p_user', JSON.stringify(found)); 
-                notify("Sukses!"); 
+                notify("Masuk Berhasil!"); 
                 closeModal('modal-login'); 
                 updateAuthDisplay(); 
                 router('dashboard'); 
@@ -576,20 +564,95 @@
             router('dashboard');
         }
 
-        // --- OTHER HELPERS ---
-        function handleAuth() { if(state.user) { localStorage.removeItem('p_user'); location.reload(); } else openLogin('member'); }
-        function handleFileSelect(e) { const f = e.target.files[0]; if(f) { const r = new FileReader(); r.onload = (ev) => { state.tempPhoto = ev.target.result; document.getElementById('u-avatar').src = ev.target.result; notify("Foto terpilih."); }; r.readAsDataURL(f); } }
+        // --- CAMERA & FILE ---
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    state.tempPhoto = e.target.result;
+                    const av = document.getElementById('u-avatar');
+                    if(av) av.src = e.target.result;
+                    notify("Foto terpilih.");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function openCameraModal(mode) {
+            state.cameraMode = mode;
+            const modal = document.getElementById('camera-modal');
+            modal.classList.remove('hidden');
+            const video = document.getElementById('webcam');
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(stream => { video.srcObject = stream; })
+                .catch(err => { notify("Kamera tidak tersedia."); closeCameraModal(); });
+        }
+        function closeCameraModal() {
+            const video = document.getElementById('webcam');
+            if(video && video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+            document.getElementById('camera-modal').classList.add('hidden');
+        }
+        function takeSnap() {
+            const video = document.getElementById('webcam');
+            const canvas = document.getElementById('photo-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 640; canvas.height = 640;
+            ctx.drawImage(video, 0, 0, 640, 640);
+            state.selfieBase64 = canvas.toDataURL('image/png');
+            closeCameraModal();
+            notify("Foto Berhasil!");
+            if(state.cameraMode === 'order') checkout();
+        }
+
+        // --- OTHER UTILS ---
+        function handleAuth() { 
+            if(state.user) { 
+                localStorage.removeItem('p_user'); 
+                location.reload(); 
+            } else {
+                openLogin('member'); 
+            }
+        }
         async function handleRegister() { const b = document.getElementById('btn-register'); const n = document.getElementById('reg-nama').value; const e = document.getElementById('reg-email').value; const p = document.getElementById('reg-pass').value; const w = document.getElementById('reg-wa').value; if(!n || !e || !p || !w) return notify("Lengkapi data!"); b.disabled = true; b.innerText = "Memproses..."; const s = await callCloud('save_user', { nama: n, email: e, noWa: w, password: p, role: 'customer', foto: state.tempPhoto }); if(s) { notify("Berhasil!"); state.tempPhoto = null; openLogin('member'); } else { notify("Gagal."); b.disabled = false; b.innerText = "Gabung Sekarang"; } }
-        function updateAuthDisplay() { const isU = state.user !== null; const a = isU ? state.user.FotoURL || `https://ui-avatars.com/api/?name=${state.user.Nama}&background=52bc1a&color=fff` : `https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff`; const av = document.getElementById('u-avatar'); if(av) av.src = a; const hav = document.getElementById('header-avatar'); if(hav) hav.src = a; const un = document.getElementById('u-name'); if(un) un.innerText = isU ? state.user.Nama : "Pelanggan Umum"; document.getElementById('auth-text-side').innerText = isU ? "Keluar Member" : "Masuk Member"; document.getElementById('reg-box').classList.toggle('hidden', isU); if(isU && ['owner','kasir','koki','waiter'].includes(state.user.Role)) document.getElementById('nav-staff').classList.remove('hidden'); if(isU && state.user.Role === 'owner') { const sideOwner = document.getElementById('side-owner'); if(sideOwner) sideOwner.classList.remove('hidden'); const configBox = document.getElementById('owner-config-box'); if(configBox) configBox.classList.remove('hidden'); } }
-        function renderHistory() { const l = document.getElementById('history-list'); if(!l) return; const idn = state.user ? state.user.Nama : 'Umum'; const ords = state.transaksi.filter(t => t.Pelanggan === idn); l.innerHTML = ords.length ? [...ords].reverse().map(o => `<div class="bg-white p-6 rounded-[30px] border border-slate-50 shadow-sm relative overflow-hidden"><div class="absolute top-0 left-0 w-1.5 h-full ${(o.Status === 'Lunas' || o.Status === 'Selesai') ? 'bg-[#52bc1a]' : 'bg-amber-400 animate-pulse'}"></div><div class="flex justify-between items-start mb-4"><div><p class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">#${o.ID_Transaksi.slice(-8)}</p><p class="text-[10px] text-slate-400">${new Date(o.Tanggal).toLocaleDateString()}</p></div><span class="text-[8px] font-black px-3 py-1.5 rounded-full ${(o.Status==='Lunas'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700')} uppercase">${o.Status}</span></div><div class="flex justify-between items-end border-t border-slate-50 pt-4 mt-2"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Tagihan</span><span class="font-black text-slate-800 text-lg">Rp ${parseFloat(o.Total).toLocaleString()}</span></div></div>`).join('') : '<div class="text-center py-20 opacity-30 italic text-sm">Belum ada riwayat.</div>'; }
-        function updateCartUI() { const t = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0); const c = state.cart.reduce((a, b) => a + b.qty, 0); const tel = document.getElementById('cart-total'); if(tel) tel.innerText = "Rp " + t.toLocaleString(); document.querySelectorAll('#nav-cart-badge, #sidebar-cart-count').forEach(el => { el.innerText = c; el.classList.toggle('hidden', c === 0); }); const lst = document.getElementById('cart-list'); if(lst) lst.innerHTML = state.cart.map(i => `<div class="flex items-center gap-5 p-5 bg-white rounded-[25px] border border-slate-100 shadow-sm transition"><img src="${i.ImageURL}" class="w-14 h-14 rounded-xl object-cover shadow-sm"><div class="flex-1"><p class="text-xs font-bold text-slate-800 line-clamp-1 leading-tight">${i.Nama}</p><p class="text-[10px] font-black text-[#52bc1a]">Rp ${i.Harga.toLocaleString()}</p></div><div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl"><button onclick="adjustQty('${i.ID}',-1)" class="p-1 text-slate-300 hover:text-red-500"><i data-lucide="minus-circle" size="18"></i></button><span class="text-xs font-black w-4 text-center">${i.qty}</span><button onclick="adjustQty('${i.ID}',1)" class="p-1 text-[#52bc1a] hover:scale-110"><i data-lucide="plus-circle" size="18"></i></button></div></div>`).join('') || '<div class="text-center py-10 opacity-20 text-xs font-bold">Keranjang Belum Terisi</div>'; lucide.createIcons(); }
+        
+        function updateAuthDisplay() { 
+            const isU = state.user !== null;
+            const a = isU ? state.user.FotoURL || `https://ui-avatars.com/api/?name=${state.user.Nama}&background=52bc1a&color=fff` : `https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff`;
+            
+            const av = document.getElementById('u-avatar'); if(av) av.src = a;
+            const hav = document.getElementById('header-avatar'); if(hav) hav.src = a;
+            
+            const un = document.getElementById('u-name'); if(un) un.innerText = isU ? state.user.Nama : "Pelanggan Umum";
+            const ur = document.getElementById('u-role'); if(ur) ur.innerText = isU ? state.user.Role : "Akun Tamu / Guest";
+            
+            const ats = document.getElementById('auth-text-side'); 
+            if(ats) ats.innerText = isU ? "Keluar Member" : "Akses Staf";
+            
+            const rb = document.getElementById('reg-box'); 
+            if(rb) rb.classList.toggle('hidden', isU);
+            
+            const ns = document.getElementById('nav-staff');
+            if(ns) {
+                const isStaff = isU && ['owner','kasir','koki','waiter'].includes(state.user.Role);
+                ns.classList.toggle('hidden', !isStaff);
+            }
+            
+            const so = document.getElementById('side-owner');
+            const ocb = document.getElementById('owner-config-box');
+            if(so) so.classList.toggle('hidden', !(isU && state.user.Role === 'owner'));
+            if(ocb) ocb.classList.toggle('hidden', !(isU && state.user.Role === 'owner'));
+        }
+
+        function renderHistory() { const l = document.getElementById('history-list'); if(!l) return; const idn = state.user ? state.user.Nama : 'Umum'; const ords = state.transaksi.filter(t => t.Pelanggan === idn); l.innerHTML = ords.length ? [...ords].reverse().map(o => `<div class="bg-white p-6 rounded-[30px] border border-slate-50 shadow-sm relative overflow-hidden"><div class="absolute top-0 left-0 w-1.5 h-full ${(o.Status === 'Lunas' || o.Status === 'Selesai') ? 'bg-[#52bc1a]' : 'bg-amber-400 animate-pulse'}"></div><div class="flex justify-between items-start mb-4"><div><p class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">#${o.ID_Transaksi.slice(-8)}</p><p class="text-[10px] text-slate-400">${new Date(o.Tanggal).toLocaleDateString()}</p></div><span class="text-[8px] font-black px-3 py-1.5 rounded-full ${(o.Status==='Lunas'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700')} uppercase">${o.Status}</span></div><div class="flex justify-between items-end border-t border-slate-50 pt-4 mt-2"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Tagihan</span><span class="font-black text-slate-800 text-lg font-black text-inherit">Rp ${parseFloat(o.Total).toLocaleString()}</span></div></div>`).join('') : '<div class="text-center py-20 opacity-30 italic text-sm">Belum ada riwayat.</div>'; }
+        function updateCartUI() { const t = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0); const c = state.cart.reduce((a, b) => a + b.qty, 0); const tel = document.getElementById('cart-total'); if(tel) tel.innerText = "Rp " + t.toLocaleString(); document.querySelectorAll('#nav-cart-badge, #sidebar-cart-count').forEach(el => { el.innerText = c; el.classList.toggle('hidden', c === 0); }); const lst = document.getElementById('cart-list'); if(lst) lst.innerHTML = state.cart.map(i => `<div class="flex items-center gap-5 p-5 bg-white rounded-[25px] border border-slate-100 shadow-sm transition"><img src="${i.ImageURL}" class="w-14 h-14 rounded-xl object-cover shadow-sm"><div class="flex-1"><p class="text-xs font-bold text-slate-800 line-clamp-1 leading-tight text-inherit">${i.Nama}</p><p class="text-[10px] font-black text-[#52bc1a]">Rp ${i.Harga.toLocaleString()}</p></div><div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl"><button onclick="adjustQty('${i.ID}',-1)" class="p-1 text-slate-300 hover:text-red-500"><i data-lucide="minus-circle" size="18"></i></button><span class="text-xs font-black w-4 text-center text-inherit">${i.qty}</span><button onclick="adjustQty('${i.ID}',1)" class="p-1 text-[#52bc1a] hover:scale-110"><i data-lucide="plus-circle" size="18"></i></button></div></div>`).join('') || '<div class="text-center py-10 opacity-20 text-xs font-bold">Keranjang Belum Terisi</div>'; lucide.createIcons(); }
         function toggleCart() { const o = document.getElementById('cart-overlay'); const b = document.getElementById('global-backdrop'); if(o) o.classList.toggle('open'); if(b) { b.style.display = o.classList.contains('open') ? 'block' : 'none'; b.classList.toggle('show'); } state.checkoutStep = 1; updateCheckoutUI(); lucide.createIcons(); }
         function updateCheckoutUI() { const f = document.getElementById('checkout-form'); const l = document.getElementById('cart-list'); const btn = document.getElementById('btn-main-checkout'); if(!f || !l || !btn) return; if (state.checkoutStep === 1) { f.classList.add('hidden'); l.classList.remove('hidden'); btn.innerText = "Lanjut ke Detail"; } else { f.classList.remove('hidden'); l.classList.add('hidden'); btn.innerText = "Proses Pesanan"; const na = document.getElementById('guest-name-area'); if(na) na.classList.toggle('hidden', state.user !== null); if(state.user) { const inp = document.getElementById('order-name'); if(inp) inp.value = state.user.Nama; } setOrderType(state.orderType); setPayment(state.currentPayment); } }
         function handleCheckoutStep() { if (state.cart.length === 0) return notify("Keranjang kosong!"); if (state.checkoutStep === 1) { state.checkoutStep = 2; updateCheckoutUI(); } else { if(state.orderType === 'ONLINE') { navigator.geolocation.getCurrentPosition(p => { state.lat = p.coords.latitude; state.lng = p.coords.longitude; openCameraModal('order'); }, err => { notify("Izin lokasi diperlukan!"); }); } else { checkout(); } } }
         async function checkout() { const nInp = document.getElementById('order-name'); const mInp = document.getElementById('meja-select'); const n = state.user ? state.user.Nama : (nInp ? nInp.value : 'Umum'); const m = mInp ? mInp.value : '-'; if(!n) return notify("Tulis nama!"); if(state.orderType === 'DINEIN' && !m) return notify("Pilih meja!"); notify("Mengirim..."); const s = await callCloud('save_order', { items: state.cart, total: state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0), pelanggan: n, tipe: state.orderType, meja: m, pembayaran: state.currentPayment, status: 'Menunggu Pembayaran', selfieBase64: state.selfieBase64, lat: state.lat, lng: state.lng }); if(s) { state.cart = []; state.checkoutStep = 1; state.selfieBase64 = null; updateCartUI(); closeAllOverlays(); notify("Berhasil!"); syncData(); } }
         function addToCart(id, s = false) { const i = state.menu.find(m => m.ID === id); if(!i) return; const e = state.cart.find(c => c.ID === id); if (e) e.qty++; else state.cart.push({...i, qty: 1}); updateCartUI(); if(!s) notify(i.Nama + " ditambah."); }
         function adjustQty(id, d) { const i = state.cart.find(c => c.ID === id); if(i) { i.qty += d; if (i.qty <= 0) state.cart = state.cart.filter(c => c.ID !== id); updateCartUI(); } }
-        function openDetail(id) { const i = state.menu.find(m => m.ID === id); if(!i) return; state.detailProduct = i; state.detailQty = 1; const b = document.getElementById('global-backdrop'); b.style.display = 'block'; b.classList.add('show'); document.getElementById('detail-content').innerHTML = `<div class="h-[350px] lg:h-[420px] bg-slate-200 relative"><img src="${i.ImageURL}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541014741259-df529411b96a?w=400'"></div><div class="p-8 lg:p-12 -mt-12 relative bg-white rounded-t-[50px] shadow-2xl"><span class="bg-emerald-50 text-[#52bc1a] px-3 py-1 rounded-full text-[10px] font-black uppercase border border-emerald-100">${i.Kategori}</span><h2 class="hero-font text-4xl lg:text-5xl font-bold mt-4 text-slate-800 leading-none font-black">${item.Nama}</h2><p class="text-3xl font-black text-[#52bc1a] mt-3 mb-10">Rp ${i.Harga.toLocaleString('id-ID')}</p><div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100"><h4 class="font-bold text-slate-800 mb-2">Deskripsi</h4><p class="text-sm text-slate-500 leading-relaxed">${i.Deskripsi}</p></div></div>`; updateDetailUI(); document.getElementById('detail-overlay').classList.add('open'); lucide.createIcons(); }
+        function openDetail(id) { const i = state.menu.find(m => m.ID === id); if(!i) return; state.detailProduct = i; state.detailQty = 1; const b = document.getElementById('global-backdrop'); if(b) { b.style.display = 'block'; b.classList.add('show'); } document.getElementById('detail-content').innerHTML = `<div class="h-[350px] lg:h-[420px] bg-slate-200 relative"><img src="${i.ImageURL}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1541014741259-df529411b96a?w=400'"></div><div class="p-8 lg:p-12 -mt-12 relative bg-white rounded-t-[50px] shadow-2xl"><span class="bg-emerald-50 text-[#52bc1a] px-3 py-1 rounded-full text-[10px] font-black uppercase border border-emerald-100 text-inherit">${i.Kategori}</span><h2 class="hero-font text-4xl lg:text-5xl font-bold mt-4 text-slate-800 leading-none font-black text-inherit">${i.Nama}</h2><p class="text-3xl font-black text-[#52bc1a] mt-3 mb-10">Rp ${i.Harga.toLocaleString('id-ID')}</p><div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100"><h4 class="font-bold text-slate-800 mb-2 text-inherit">Deskripsi</h4><p class="text-sm text-slate-500 leading-relaxed text-inherit">${i.Deskripsi}</p></div></div>`; updateDetailUI(); document.getElementById('detail-overlay').classList.add('open'); lucide.createIcons(); }
         function updateDetailUI() { const q = document.getElementById('detail-qty'); const b = document.getElementById('btn-detail-add'); if(q) q.innerText = state.detailQty; if(b && state.detailProduct) { b.innerText = `Simpan • Rp ${(state.detailProduct.Harga * state.detailQty).toLocaleString()}`; b.onclick = () => { for(let j=0; j<state.detailQty; j++) addToCart(state.detailProduct.ID, true); closeAllOverlays(); }; } }
         function adjustDetailQty(d) { state.detailQty = Math.max(1, state.detailQty + d); updateDetailUI(); }
         function setOrderType(t) { state.orderType = t; document.querySelectorAll('#btn-dinein, #btn-takeaway, #btn-online-order').forEach(b => b.className = 'flex-1 py-3 rounded-2xl border-2 border-slate-200 text-xs font-bold text-slate-400 bg-white'); const active = document.getElementById(t === 'DINEIN' ? 'btn-dinein' : (t === 'TAKEAWAY' ? 'btn-takeaway' : 'btn-online-order')); if(active) active.className = 'flex-1 py-3 rounded-2xl border-2 border-[#52bc1a] text-xs font-bold text-[#52bc1a] bg-emerald-50'; const ts = document.getElementById('table-selection'); if(ts) ts.classList.toggle('hidden', t !== 'DINEIN'); }
@@ -598,20 +661,24 @@
         async function callCloud(action, data) { try { const url = localStorage.getItem('p_api_url') || DEFAULT_API_URL; const r = await fetch(url, { method: 'POST', body: JSON.stringify({ action: action, data: data }) }); const j = await r.json(); return j.status === 'success'; } catch (e) { return true; } }
         function forgotPassword() { const e = prompt("Email:"); if(e) notify("Instruksi dikirim."); }
         function saveConfig() { localStorage.setItem('p_api_url', document.getElementById('api-url-field').value); notify("Disimpan."); syncData(); }
+        
         function openLogin(role) {
             state.currentRoleLogin = role;
             const modal = document.getElementById('modal-login');
             const icon = document.getElementById('login-icon');
             const title = document.getElementById('login-title');
+            const desc = document.getElementById('login-desc');
             if(!modal || !icon || !title) return;
             if (role === 'staff') {
                 icon.innerHTML = '<i data-lucide="briefcase" size="32"></i>';
                 icon.className = 'w-20 h-20 bg-slate-900 text-white rounded-[30px] flex items-center justify-center mx-auto mb-4';
                 title.innerText = 'Login Staf';
+                if(desc) desc.innerText = 'Akses profesional & operasional.';
             } else {
                 icon.innerHTML = '<i data-lucide="user" size="32"></i>';
                 icon.className = 'w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4';
                 title.innerText = 'Login Member';
+                if(desc) desc.innerText = 'Gunakan Email atau Nomor WhatsApp.';
             }
             modal.classList.remove('hidden');
             lucide.createIcons();
