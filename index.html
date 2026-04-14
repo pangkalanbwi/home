@@ -32,6 +32,7 @@
         }
         .hero-font { font-family: 'Playfair Display', serif; }
         
+        /* Smooth Transitions */
         .page-view { display: none; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
         .page-view.active { display: block; opacity: 1; transform: translateY(0); }
         
@@ -39,6 +40,7 @@
         .sidebar-item.active { background: #52bc1a; color: white !important; box-shadow: 0 4px 15px rgba(82, 188, 26, 0.3); }
         .sidebar-item.active i { color: white !important; }
         
+        /* Nav Pill */
         .bottom-pill {
             position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
             width: 94%; max-width: 450px; background: rgba(255, 255, 255, 0.98);
@@ -87,6 +89,9 @@
         .submenu-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 48px; border-radius: 1rem; transition: 0.2s; font-size: 0.75rem; font-weight: 500; color: #64748b; width: 100%; text-align: left; }
         .submenu-item:hover { background: rgba(82, 188, 26, 0.05); color: var(--p-accent); }
         .submenu-item.active { color: var(--p-accent); font-weight: 700; background: rgba(82, 188, 26, 0.1); }
+        
+        .video-container { width: 100%; max-width: 300px; aspect-ratio: 1; margin: 0 auto; border-radius: 2rem; overflow: hidden; background: black; }
+        video { width: 100%; height: 100%; object-fit: cover; }
 
         .detail-footer-grid {
             display: grid;
@@ -151,7 +156,7 @@
                 </button>
                 <button onclick="toggleCart()" id="side-cart" class="sidebar-item w-full flex items-center justify-between p-4 hover:bg-slate-50 text-slate-600 text-inherit">
                     <div class="flex items-center gap-4 text-inherit">
-                        <i data-lucide="shopping-basket" size="20"></i> <span class="text-sm font-semibold text-inherit text-inherit">Keranjang</span>
+                        <i data-lucide="shopping-basket" size="20"></i> <span class="text-sm font-semibold text-inherit">Keranjang</span>
                     </div>
                     <span id="sidebar-cart-count" class="bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full font-bold hidden">0</span>
                 </button>
@@ -159,19 +164,19 @@
                     <i data-lucide="bike" size="20"></i> <span class="text-sm font-semibold text-inherit text-inherit">Order Online</span>
                 </button>
                 <button onclick="router('settings')" id="side-profile" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600">
-                    <i data-lucide="user" size="20"></i> <span class="text-sm font-semibold text-inherit text-inherit">Member Area</span>
+                    <i data-lucide="user" size="20"></i> <span class="text-sm font-semibold text-inherit">Member Area</span>
                 </button>
                 
                 <div id="nav-staff" class="hidden pt-6 mt-6 border-t border-slate-50 space-y-1 text-inherit">
                     <p class="text-[10px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest text-inherit">Backoffice</p>
                     <button onclick="router('pegawai')" id="side-pegawai" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-50 text-slate-600 text-inherit"><i data-lucide="user-cog" size="20"></i> <span class="text-sm">Absensi Staf</span></button>
-                    <button onclick="router('owner')" id="side-owner" class="hidden sidebar-item w-full items-center gap-4 p-4 hover:bg-slate-50 text-emerald-700 font-bold border-t border-slate-50 pt-4 mt-2 text-inherit"><i data-lucide="shield-check" size="20"></i> <span class="text-sm">Owner Panel</span></button>
+                    <button onclick="router('owner')" id="side-owner" class="hidden sidebar-item w-full items-center gap-4 p-4 hover:bg-slate-50 text-emerald-700 font-bold border-t border-slate-50 pt-4 mt-2 text-inherit"><i data-lucide="shield-check" size="20"></i> <span class="text-sm text-inherit">Owner Panel</span></button>
                 </div>
             </nav>
 
             <div class="pt-6 border-t border-slate-50 text-inherit text-inherit">
                 <p class="text-[9px] font-black text-slate-300 uppercase px-4 mb-2 tracking-widest text-inherit">Sistem</p>
-                <button id="btn-auth-side" onclick="handleStafAccess()" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-900 hover:text-white transition group text-slate-500 text-inherit">
+                <button id="btn-auth-side" onclick="handleStafAccess()" class="sidebar-item w-full flex items-center gap-4 p-4 hover:bg-slate-900 hover:text-white transition group text-slate-500 text-inherit text-inherit">
                     <i data-lucide="briefcase" size="20" class="group-hover:translate-x-1 transition text-inherit"></i> <span id="auth-text-side" class="text-sm font-bold text-inherit">Akses Staf</span>
                 </button>
             </div>
@@ -199,7 +204,7 @@
 
             <!-- VIEW: DASHBOARD -->
             <div id="view-dashboard" class="page-view active text-inherit">
-                <section class="relative h-56 lg:h-[420px] rounded-[30px] lg:rounded-[45px] overflow-hidden mb-12 shadow-xl group">
+                <section class="relative h-56 lg:h-[420px] rounded-[30px] lg:rounded-[45px] overflow-hidden mb-12 shadow-xl group text-inherit">
                     <img id="hero-img" src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80&w=1200" class="w-full h-full object-cover transition duration-1000 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-transparent flex items-center px-8 lg:px-20 text-inherit">
                         <div class="max-w-[280px] lg:max-w-lg text-inherit text-inherit">
@@ -209,205 +214,224 @@
                         </div>
                     </div>
                 </section>
+                
+                <!-- Mobile Search -->
+                <div class="md:hidden flex items-center bg-white border border-slate-100 rounded-3xl px-6 py-4 shadow-sm mb-8 focus-within:ring-2 focus-within:ring-emerald-500 transition text-inherit">
+                    <i data-lucide="search" size="18" class="text-slate-400"></i>
+                    <input type="text" id="search-menu-mobile" oninput="searchMenu()" placeholder="Cari menu natural kami..." class="bg-transparent border-none outline-none text-sm ml-3 w-full font-bold text-slate-700">
+                </div>
+
                 <div id="grid-menu" class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 text-inherit"></div>
             </div>
 
-            <!-- VIEW: MEMBER AREA (Refined Layout Based on image_d77a0f.png) -->
-            <div id="view-settings" class="page-view text-inherit text-inherit">
+            <!-- VIEW: MEMBER AREA (image_d77a0f.png Style) -->
+            <div id="view-settings" class="page-view text-inherit text-inherit text-inherit">
                 <div class="max-w-2xl mx-auto space-y-10">
                     
-                    <!-- Profile Identity Card -->
-                    <div class="bg-white p-10 rounded-[45px] shadow-xl text-center border border-slate-50 relative overflow-hidden text-inherit">
+                    <!-- Identity Card -->
+                    <div class="bg-white p-10 rounded-[45px] shadow-xl text-center border border-slate-50 relative overflow-hidden">
                         <div class="absolute top-0 left-0 w-full h-2.5 bg-[#52bc1a]"></div>
                         
-                        <!-- Avatar Section -->
                         <div class="relative w-32 h-32 mx-auto mb-6 text-inherit">
-                            <img id="u-avatar" src="https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff" class="w-full h-full rounded-[35px] border-4 border-white shadow-xl object-cover text-inherit">
+                            <img id="u-avatar" src="https://ui-avatars.com/api/?name=Guest&background=ccc&color=fff" class="w-full h-full rounded-[35px] border-4 border-white shadow-xl object-cover text-inherit text-inherit">
                             <button onclick="document.getElementById('reg-photo-input').click()" class="absolute -bottom-2 -right-2 bg-[#52bc1a] text-white p-3 rounded-2xl shadow-lg border-4 border-white hover:scale-110 transition duration-300">
                                 <i data-lucide="camera" size="18"></i>
                             </button>
                             <input type="file" id="reg-photo-input" class="hidden" accept="image/*" onchange="handleFileSelect(event)">
                         </div>
 
-                        <!-- Name & Label -->
                         <h4 id="u-name" class="text-3xl font-black leading-tight text-slate-800 text-inherit">Pelanggan Umum</h4>
-                        <p id="u-role" class="text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] mt-1 text-inherit">AKUN TAMU / GUEST</p>
+                        <p id="u-role" class="text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] mt-1">AKUN TAMU / GUEST</p>
                         
-                        <!-- Shortcut Tiles (Action Row) -->
-                        <div id="auth-controls" class="mt-10 pt-10 border-t border-slate-100">
-                            <div id="guest-shortcuts" class="grid grid-cols-2 gap-6 max-w-sm mx-auto">
-                                <div onclick="openLogin('member')" class="action-tile group">
+                        <div id="auth-controls" class="mt-10 pt-10 border-t border-slate-100 text-inherit">
+                            <div id="guest-shortcuts" class="grid grid-cols-2 gap-6 max-w-sm mx-auto text-inherit">
+                                <div onclick="openLogin('member')" class="action-tile group text-inherit">
                                     <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-[#52bc1a] flex items-center justify-center group-hover:bg-[#52bc1a] group-hover:text-white transition duration-300 shadow-sm"><i data-lucide="user" size="24"></i></div>
                                     <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-[#52bc1a]">Login Member</span>
                                 </div>
-                                <div onclick="openLogin('staff')" class="action-tile group">
+                                <div onclick="openLogin('staff')" class="action-tile group text-inherit">
                                     <div class="w-14 h-14 rounded-2xl bg-slate-900 text-white flex items-center justify-center group-hover:bg-[#52bc1a] transition duration-300 shadow-sm"><i data-lucide="briefcase" size="24"></i></div>
-                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 text-inherit">Akses Staf</span>
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900">Akses Staf</span>
                                 </div>
                             </div>
 
-                            <!-- Logout Area (Integrated) -->
                             <div id="logout-area" class="hidden max-w-xs mx-auto text-inherit">
                                 <button onclick="handleLogout()" class="w-full flex items-center justify-center gap-3 bg-red-50 text-red-500 py-5 rounded-[25px] font-black text-xs uppercase tracking-widest hover:bg-red-100 transition duration-300">
-                                    <i data-lucide="log-out" size="18"></i> Logout Sekarang
+                                    <i data-lucide="log-out" size="18"></i> Keluar Sekarang
                                 </button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Registration Card (Clean & Modern) -->
+                    <!-- Registration Box -->
                     <div id="reg-box" class="bg-white p-10 rounded-[45px] shadow-xl border border-slate-50 text-center text-inherit">
-                        <div class="mb-10">
+                        <div class="mb-10 text-inherit">
                             <h4 class="font-black text-2xl text-slate-800 text-inherit">Daftar Member Baru</h4>
-                            <p class="text-sm text-slate-400 mt-2 font-medium">Lengkapi data untuk kemudahan pemesanan natural resto kami.</p>
+                            <p class="text-sm text-slate-400 mt-2 font-medium">Lengkapi data untuk kenyamanan pemesanan.</p>
                         </div>
-                        <div class="space-y-4 max-w-lg mx-auto text-inherit">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-inherit">
+                        <div class="space-y-4 max-w-lg mx-auto">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <input type="text" id="reg-nama" class="p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium" placeholder="Nama Lengkap">
                                 <input type="tel" id="reg-wa" class="p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium" placeholder="No. WhatsApp">
                             </div>
-                            <input type="email" id="reg-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium text-inherit" placeholder="Email Aktif">
-                            <input type="password" id="reg-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium text-inherit" placeholder="Buat Password Akun">
-                            <button id="btn-register" onclick="handleRegister()" class="w-full py-6 bg-[#52bc1a] text-white rounded-[30px] font-black text-sm shadow-xl shadow-emerald-100 hover:scale-[1.02] active:scale-95 transition mt-4 text-inherit">
-                                GABUNG SEKARANG
+                            <input type="email" id="reg-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium" placeholder="Email Aktif">
+                            <input type="password" id="reg-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition font-medium" placeholder="Buat Password Akun">
+                            <button id="btn-register" onclick="handleRegister()" class="w-full py-6 bg-[#52bc1a] text-white rounded-[30px] font-black text-sm shadow-xl shadow-emerald-100 hover:scale-[1.02] active:scale-95 transition mt-4">
+                                GABUNG MEMBER SEKARANG
                             </button>
-                            <button onclick="openForgotModal()" class="w-full text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] text-center mt-6 hover:text-[#52bc1a] transition duration-300 text-inherit">LUPA KATA SANDI?</button>
+                            <button onclick="openForgotModal()" class="w-full text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] text-center mt-6 hover:text-[#52bc1a] transition duration-300">LUPA KATA SANDI?</button>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- VIEW: ONLINE ORDER -->
-            <div id="view-online" class="page-view text-inherit text-inherit text-inherit">
-                <div class="max-w-2xl mx-auto bg-white p-10 rounded-[45px] shadow-xl border border-slate-50 text-center text-inherit">
-                    <h2 class="text-3xl font-black text-slate-800 mb-2">Pesan Antar Online</h2>
-                    <p class="text-slate-400 text-sm mb-10 text-inherit text-inherit">Nikmati menu sehat langsung di rumah Anda.</p>
-                    
-                    <div class="space-y-4 mb-10 text-left text-inherit text-inherit">
-                        <h4 class="font-bold text-slate-800 border-b pb-2 mb-4 text-inherit">Seputar Order (Q&A)</h4>
-                        <details class="group bg-slate-50 p-5 rounded-3xl cursor-pointer text-inherit">
-                            <summary class="flex justify-between items-center list-none font-bold text-sm text-slate-700">Area pengantaran gratis? <i data-lucide="plus" size="16" class="group-open:rotate-45 transition"></i></summary>
-                            <p class="mt-3 text-xs text-slate-500 leading-relaxed text-inherit">Gratis ongkir untuk radius 1km dari lokasi RM Pangkalan.</p>
-                        </details>
-                        <details class="group bg-slate-50 p-5 rounded-3xl cursor-pointer text-inherit">
-                            <summary class="flex justify-between items-center list-none font-bold text-sm text-slate-700">Kenapa butuh verifikasi selfie? <i data-lucide="plus" size="16" class="group-open:rotate-45 transition"></i></summary>
-                            <p class="mt-3 text-xs text-slate-500 leading-relaxed text-inherit">Selfie & GPS membantu kurir menemukan titik lokasi presisi Anda dengan cepat.</p>
-                        </details>
-                    </div>
+            <div id="view-online" class="page-view text-inherit text-inherit">
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="bg-white p-10 rounded-[45px] shadow-xl border border-slate-50 text-center text-inherit">
+                        <h2 class="text-3xl font-black text-slate-800 mb-2">Pesan Antar Online</h2>
+                        <p class="text-slate-400 text-sm mb-10">Layanan pengantaran menu natural ke rumah Anda.</p>
+                        
+                        <div class="space-y-4 mb-10 text-left">
+                            <h4 class="font-bold text-slate-800 border-b pb-2 mb-4">Informasi Order (Q&A)</h4>
+                            <details class="group bg-slate-50 p-5 rounded-3xl cursor-pointer text-inherit">
+                                <summary class="flex justify-between items-center list-none font-bold text-sm text-slate-700">Area pengantaran gratis? <i data-lucide="plus" size="16" class="group-open:rotate-45 transition"></i></summary>
+                                <p class="mt-3 text-xs text-slate-500 leading-relaxed text-inherit">Gratis pengiriman hingga radius 1km dari lokasi RM Pangkalan.</p>
+                            </details>
+                            <details class="group bg-slate-50 p-5 rounded-3xl cursor-pointer text-inherit">
+                                <summary class="flex justify-between items-center list-none font-bold text-sm text-slate-700 text-inherit">Kenapa butuh GPS & Selfie? <i data-lucide="plus" size="16" class="group-open:rotate-45 transition"></i></summary>
+                                <p class="mt-3 text-xs text-slate-500 leading-relaxed text-inherit">Koordinat presisi dan foto titik alamat membantu kurir menemukan rumah Anda lebih cepat.</p>
+                            </details>
+                        </div>
 
-                    <button onclick="window.location.href='order.html'" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black shadow-xl hover:scale-[1.02] transition flex items-center justify-center gap-3">
-                        FORM ORDER KHUSUS <i data-lucide="arrow-right"></i>
-                    </button>
+                        <button onclick="window.location.href='order.html'" class="w-full py-6 bg-slate-900 text-white rounded-[30px] font-black shadow-xl hover:scale-[1.02] transition flex items-center justify-center gap-3">
+                            BUKA FORM ORDER KHUSUS <i data-lucide="arrow-right-circle"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- RIWAYAT -->
-            <div id="view-history" class="page-view text-inherit"><h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800 text-inherit"><i data-lucide="history" class="text-slate-400 text-inherit"></i> Jejak Pesanan</h2><div id="history-list" class="space-y-4 text-inherit"></div></div>
+            <div id="view-history" class="page-view text-inherit"><h2 class="text-2xl font-bold mb-8 flex items-center gap-3 text-slate-800 text-inherit"><i data-lucide="history" class="text-slate-400"></i> Jejak Pesanan</h2><div id="history-list" class="space-y-4 text-inherit"></div></div>
         </main>
 
         <nav class="lg:hidden bottom-pill text-inherit">
-            <button onclick="router('dashboard')" id="nav-dashboard" class="nav-btn active"><i data-lucide="home" size="20"></i><span class="text-[9px] mt-1 font-bold">Home</span></button>
-            <button onclick="router('history')" id="nav-history" class="nav-btn"><i data-lucide="history" size="20"></i><span class="text-[9px] mt-1 font-bold">Riwayat</span></button>
-            <button onclick="toggleCart()" class="nav-btn">
+            <button onclick="router('dashboard')" id="nav-dashboard" class="nav-btn active text-inherit"><i data-lucide="home" size="20"></i><span class="text-[9px] mt-1 font-bold">Home</span></button>
+            <button onclick="router('history')" id="nav-history" class="nav-btn text-inherit"><i data-lucide="history" size="20"></i><span class="text-[9px] mt-1 font-bold">Riwayat</span></button>
+            <button onclick="toggleCart()" class="nav-btn text-inherit">
                 <div class="cart-center">
                     <i data-lucide="shopping-basket" size="24"></i>
                     <span id="nav-cart-badge" class="absolute top-2 right-1 bg-red-500 text-white text-[8px] w-4 h-4 rounded-full flex items-center justify-center border border-white font-black hidden">0</span>
                 </div>
             </button>
-            <button onclick="router('online')" id="nav-online" class="nav-btn text-inherit"><i data-lucide="bike" size="20"></i><span class="text-[9px] mt-1 font-bold">Online</span></button>
-            <button onclick="handleBottomNavProfile()" id="nav-settings" class="nav-btn text-inherit"><i data-lucide="user" size="20"></i><span class="text-[9px] mt-1 font-bold">Akun</span></button>
+            <button onclick="router('online')" id="nav-online" class="nav-btn text-inherit"><i data-lucide="bike" size="20"></i><span class="text-[9px] mt-1 font-bold text-inherit">Online</span></button>
+            <button onclick="handleBottomNavProfile()" id="nav-settings" class="nav-btn text-inherit"><i data-lucide="user" size="20"></i><span class="text-[9px] mt-1 font-bold text-inherit">Akun</span></button>
         </nav>
 
         <!-- CART OVERLAY -->
         <div id="cart-overlay" class="slide-overlay flex flex-col text-inherit">
-            <div class="p-8 flex justify-between items-center bg-white border-b border-slate-50 text-inherit">
+            <div class="p-8 flex justify-between items-center bg-white border-b border-slate-50">
                 <h3 class="text-2xl font-bold text-slate-800">Keranjang</h3>
                 <button onclick="closeAllOverlays()" class="p-2.5 bg-slate-100 rounded-full text-slate-400 hover:text-red-500 transition"><i data-lucide="x" size="20"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto p-6 space-y-4 no-scrollbar text-inherit text-inherit">
-                <div id="cart-list" class="space-y-4 text-center text-inherit"></div>
+                <div id="cart-list" class="space-y-4 text-center text-inherit text-inherit"></div>
                 <div id="checkout-form" class="hidden pt-6 mt-6 border-t border-slate-100 space-y-6 text-inherit text-inherit">
                     <div id="guest-name-area" class="space-y-2">
                         <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-inherit">Nama Pemesan</label>
-                        <input type="text" id="order-name" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none" placeholder="Wajib untuk tamu...">
+                        <input type="text" id="order-name" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition" placeholder="Wajib untuk tamu...">
                     </div>
                     <div class="flex gap-2 text-inherit">
                         <button onclick="setOrderType('DINEIN')" id="btn-dinein" class="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-xs font-bold text-slate-400 bg-white">Makan Sini</button>
                         <button onclick="setOrderType('TAKEAWAY')" id="btn-takeaway" class="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-xs font-bold text-slate-400 bg-white">Bawa Pulang</button>
                     </div>
                     <div id="table-selection" class="space-y-2 text-inherit">
-                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest text-inherit">Nomor Meja</label>
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nomor Meja</label>
                         <select id="meja-select" class="w-full p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none">
                             <option value="">-- Pilih Meja --</option>
                             <option value="1">Meja 01</option><option value="2">Meja 02</option><option value="3">Meja 03</option><option value="4">Meja 04</option><option value="5">Meja 05</option><option value="6">Meja 06</option>
                         </select>
                     </div>
+                    <div class="space-y-3 text-center text-inherit">
+                        <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Metode Pembayaran</label>
+                        <div class="grid grid-cols-4 gap-2 text-inherit">
+                            <div onclick="setPayment('Cash')" id="pay-Cash" class="payment-icon-btn p-3 bg-slate-50 shadow-sm"><i data-lucide="banknote" class="text-emerald-600 mx-auto"></i><p class="text-[8px] font-bold mt-1 uppercase">Tunai</p></div>
+                            <div onclick="setPayment('QRIS')" id="pay-QRIS" class="payment-icon-btn p-3 bg-slate-50 shadow-sm"><i data-lucide="qr-code" class="text-blue-600 mx-auto"></i><p class="text-[8px] font-bold mt-1 uppercase text-inherit">QRIS</p></div>
+                            <div onclick="setPayment('Card')" id="pay-Card" class="payment-icon-btn p-3 bg-slate-50 shadow-sm"><i data-lucide="credit-card" class="text-indigo-600 mx-auto"></i><p class="text-[8px] font-bold mt-1 uppercase text-inherit">Kartu</p></div>
+                            <div onclick="setPayment('Digital')" id="pay-Digital" class="payment-icon-btn p-3 bg-slate-50 shadow-sm"><i data-lucide="printer" class="text-slate-700 mx-auto"></i><p class="text-[8px] font-bold mt-1 uppercase text-inherit">Bill</p></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="p-8 border-t bg-slate-50 rounded-t-[40px] shadow-2xl text-inherit">
-                <div class="flex justify-between mb-6 px-2 text-inherit"><span class="font-bold text-slate-400 text-xs uppercase tracking-widest font-black">Tagihan Total</span><span id="cart-total" class="text-2xl font-black text-slate-800 font-bold text-inherit">Rp 0</span></div>
+                <div class="flex justify-between mb-6 px-2 text-inherit"><span class="font-bold text-slate-400 text-xs uppercase tracking-widest font-black text-inherit">Tagihan Total</span><span id="cart-total" class="text-2xl font-black text-slate-800 font-bold">Rp 0</span></div>
                 <button onclick="handleCheckoutStep()" id="btn-main-checkout" class="w-full btn-primary py-6 rounded-3xl font-bold shadow-xl">Lanjut ke Detail</button>
             </div>
         </div>
 
         <!-- DETAIL MODAL -->
         <div id="detail-overlay" class="slide-overlay flex flex-col bg-white text-inherit">
+            <!-- Proportional close button Top Right -->
             <button onclick="closeAllOverlays()" class="absolute top-6 right-6 z-[200] p-3 bg-white/80 backdrop-blur rounded-full shadow-lg text-slate-400 hover:text-red-500 transition duration-300"><i data-lucide="x" size="24"></i></button>
-            <div id="detail-content" class="flex-1 overflow-y-auto no-scrollbar relative text-center text-inherit text-inherit"></div>
+            <div id="detail-content" class="flex-1 overflow-y-auto no-scrollbar relative text-center text-inherit"></div>
             <div class="detail-footer-grid sticky bottom-0 z-[100] shadow-2xl text-inherit">
-                <div class="flex items-center justify-between bg-slate-100 px-4 py-3 rounded-2xl text-inherit">
-                    <button onclick="adjustDetailQty(-1)" class="text-slate-400 active:scale-90"><i data-lucide="minus" size="18"></i></button>
+                <div class="flex items-center justify-between bg-slate-100 px-4 py-3 rounded-2xl">
+                    <button onclick="adjustDetailQty(-1)" class="text-slate-400 active:scale-90 text-inherit"><i data-lucide="minus" size="18"></i></button>
                     <span id="detail-qty" class="font-bold text-lg w-6 text-center">1</span>
-                    <button onclick="adjustDetailQty(1)" class="text-[#52bc1a] active:scale-90"><i data-lucide="plus" size="18"></i></button>
+                    <button onclick="adjustDetailQty(1)" class="text-[#52bc1a] active:scale-90 text-inherit"><i data-lucide="plus" size="18"></i></button>
                 </div>
                 <button id="btn-detail-add" class="btn-primary py-4 rounded-2xl font-bold text-xs lg:text-sm text-inherit">Simpan Pesanan</button>
             </div>
         </div>
 
-        <div id="modal-success" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[5000] hidden flex items-center justify-center p-6 text-center text-inherit text-inherit text-inherit">
-            <div class="bg-white w-full max-w-sm rounded-[45px] p-10 shadow-2xl text-inherit">
-                <div class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-full flex items-center justify-center mx-auto mb-6 text-inherit"><i data-lucide="check-circle" size="48"></i></div>
+        <div id="modal-success" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[5000] hidden flex items-center justify-center p-6 text-center text-inherit text-inherit">
+            <div class="bg-white w-full max-w-sm rounded-[45px] p-10 shadow-2xl">
+                <div class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-full flex items-center justify-center mx-auto mb-6 text-inherit text-inherit text-inherit"><i data-lucide="check-circle" size="48"></i></div>
                 <h3 class="text-2xl font-bold text-slate-800 text-inherit">Berhasil!</h3>
-                <p class="text-slate-400 text-sm mt-2 mb-8 text-inherit text-inherit">Pesanan Anda telah kami terima.</p>
-                <button onclick="closeModal('modal-success')" class="w-full btn-primary py-5 rounded-2xl font-bold text-inherit">Lanjut Belanja</button>
+                <p class="text-slate-400 text-sm mt-2 mb-8 text-inherit">Pesanan Anda telah kami terima.</p>
+                <button onclick="closeModal('modal-success')" class="w-full btn-primary py-5 rounded-2xl font-bold text-inherit text-inherit text-inherit">Lanjut Belanja</button>
             </div>
         </div>
-    </div>
 
-    <!-- MODALS (LOGIN & RESET) -->
-    <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6 text-center text-inherit text-inherit">
-        <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative border border-white/20">
-            <button onclick="closeModal('modal-login')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition"><i data-lucide="x" size="18"></i></button>
-            <div class="text-center mb-10 pt-4"><div id="login-icon" class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4"><i data-lucide="user" size="32"></i></div><h3 id="login-title" class="text-2xl font-bold text-slate-800 text-inherit text-inherit">Login</h3></div>
-            <div class="space-y-4">
-                <input type="text" id="l-credential" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none text-inherit text-inherit" placeholder="Email atau WhatsApp">
-                <input type="password" id="l-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none text-inherit text-inherit" placeholder="Sandi Akun">
-                <button onclick="processLogin()" class="w-full btn-primary py-5 rounded-2xl font-bold shadow-xl mt-6 text-sm text-inherit text-inherit">Masuk Sekarang</button>
+        <!-- LOGIN MODAL -->
+        <div id="modal-login" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6 text-center">
+            <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative border border-white/20 text-inherit">
+                <button onclick="closeModal('modal-login')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition text-inherit"><i data-lucide="x" size="18"></i></button>
+                <div class="text-center mb-10 pt-4 text-inherit">
+                    <div id="login-icon" class="w-20 h-20 bg-emerald-50 text-[#52bc1a] rounded-[30px] flex items-center justify-center mx-auto mb-4 text-inherit"><i data-lucide="user" size="32"></i></div>
+                    <h3 id="login-title" class="text-2xl font-bold text-slate-800 text-inherit">Login</h3>
+                </div>
+                <div class="space-y-4 text-inherit text-inherit">
+                    <input type="text" id="l-credential" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none text-inherit text-inherit" placeholder="Email atau WhatsApp">
+                    <input type="password" id="l-pass" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none text-inherit text-inherit" placeholder="Sandi Akun">
+                    <button onclick="processLogin()" class="w-full btn-primary py-5 rounded-[30px] font-black text-sm shadow-xl mt-6 text-inherit text-inherit text-inherit">MASUK SEKARANG</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="modal-forgot" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6 text-center text-inherit text-inherit text-inherit">
-        <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative text-inherit">
-            <button onclick="closeModal('modal-forgot')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition"><i data-lucide="x" size="18"></i></button>
-            <div class="text-center mb-8 pt-4">
-                <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-inherit"><i data-lucide="help-circle" size="28"></i></div>
-                <h3 class="text-xl font-bold text-slate-800 text-inherit text-inherit text-inherit">Reset Password</h3>
-            </div>
-            <div class="space-y-4 text-center text-inherit">
-                <input type="email" id="forgot-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-2xl text-sm outline-none text-inherit" placeholder="Email Terdaftar">
-                <button onclick="submitForgotPassword()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-bold shadow-xl text-sm">Kirim Instruksi</button>
+        <!-- FORGOT PASS MODAL -->
+        <div id="modal-forgot" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[3000] hidden flex items-center justify-center p-6 text-center">
+            <div class="bg-white w-full max-w-md rounded-[45px] p-10 shadow-2xl relative text-inherit">
+                <button onclick="closeModal('modal-forgot')" class="absolute top-8 right-8 p-2 bg-slate-100 rounded-full hover:bg-slate-200 transition text-inherit"><i data-lucide="x" size="18"></i></button>
+                <div class="text-center mb-8 pt-4 text-inherit">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 text-inherit"><i data-lucide="help-circle" size="28"></i></div>
+                    <h3 class="text-xl font-bold text-slate-800 text-inherit">Reset Password</h3>
+                </div>
+                <div class="space-y-4 text-center text-inherit">
+                    <input type="email" id="forgot-email" class="w-full p-5 bg-slate-50 border border-slate-100 rounded-3xl text-sm outline-none text-inherit" placeholder="Email Terdaftar">
+                    <button onclick="submitForgotPassword()" class="w-full bg-slate-900 text-white py-5 rounded-[30px] font-black shadow-xl text-sm text-inherit text-inherit">KIRIM INSTRUKSI</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- TOAST -->
-    <div id="toast" class="fixed bottom-40 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white px-8 py-4 rounded-3xl opacity-0 pointer-events-none transition-all duration-300 z-[9999] shadow-2xl text-[10px] font-black uppercase tracking-widest border border-white/10">
+    <div id="toast" class="fixed bottom-40 left-1/2 -translate-x-1/2 bg-slate-900/90 backdrop-blur-md text-white px-8 py-4 rounded-3xl opacity-0 pointer-events-none transition-all duration-300 z-[9999] shadow-2xl text-[10px] font-black uppercase tracking-widest border border-white/10 text-inherit text-inherit">
         <span id="toast-msg">Notif...</span>
     </div>
 
     <script>
-        // --- GLOBAL CORE FUNCTIONS ---
+        // --- GLOBAL CORE UI FUNCTIONS ---
         function notify(msg) {
             const t = document.getElementById('toast');
             const m = document.getElementById('toast-msg');
@@ -481,6 +505,7 @@
             if(!document.getElementById('view-dashboard').classList.contains('active')) router('dashboard');
             document.querySelectorAll('.submenu-item').forEach(b => b.classList.remove('active'));
             const subBtn = document.getElementById(`sub-${c}`); if(subBtn) subBtn.classList.add('active');
+            
             const img = document.getElementById('hero-img');
             if(img) {
                 img.style.opacity = 0.5;
@@ -499,11 +524,13 @@
             const cred = credInput.value.trim();
             const pass = passInput.value.trim();
             const users = JSON.parse(localStorage.getItem('p_users')) || [];
+            
             const found = users.find(u => (String(u.Email) === cred || String(u.NoWA) === cred) && String(u.Password) === pass);
             if (found) { 
                 const isStaffLogin = state.currentRoleLogin === 'staff';
                 const isUserStaff = ['owner', 'kasir', 'koki', 'waiter'].includes(found.Role.toLowerCase());
-                if (isStaffLogin && !isUserStaff) return notify("Eror: Jalur Akses Khusus Staf.");
+                if (isStaffLogin && !isUserStaff) return notify("Akses Ditolak: Khusus Otoritas Staf.");
+                
                 state.user = found; 
                 localStorage.setItem('p_user', JSON.stringify(found)); 
                 notify("Masuk Berhasil!"); 
@@ -521,10 +548,10 @@
             const p = document.getElementById('reg-pass').value;
             const w = document.getElementById('reg-wa').value;
             if(!n || !e || !p || !w) return notify("Lengkapi data!");
-            notify("Memproses...");
+            notify("Mendaftarkan member...");
             const s = await callCloud('save_user', { nama: n, email: e, noWa: w, password: p, role: 'customer' });
             if(s) { notify("Berhasil Daftar!"); openLogin('member'); }
-            else notify("Gagal.");
+            else notify("Gagal mendaftar.");
         }
 
         function searchMenu() {
@@ -533,7 +560,17 @@
             renderMenuGrid(filtered);
         }
 
-        // --- GLOBAL STATE ---
+        function renderHistory() {
+            const l = document.getElementById('history-list'); if(!l) return;
+            const idn = state.user ? state.user.Nama : 'Umum';
+            const ords = state.transaksi.filter(t => t.Pelanggan === idn || t.Pelanggan === 'Umum');
+            l.innerHTML = ords.length ? [...ords].reverse().map(o => {
+                const isPaid = (o.Status === 'Lunas' || o.Status === 'Selesai');
+                return `<div class="bg-white p-6 rounded-[30px] border border-slate-50 shadow-sm relative overflow-hidden transition hover:shadow-md"><div class="absolute top-0 left-0 w-1.5 h-full ${o.Status==='Lunas'?'bg-[#52bc1a]':'bg-amber-400 animate-pulse'}"></div><div class="flex justify-between items-start mb-4"><div><p class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">#${o.ID_Transaksi.slice(-8)}</p><p class="text-[10px] text-slate-400">${new Date(o.Tanggal).toLocaleDateString()}</p></div><span class="text-[8px] font-black px-3 py-1.5 rounded-full ${o.Status==='Lunas'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'} uppercase">${o.Status}</span></div><div class="flex justify-between items-end border-t border-slate-50 pt-4 mt-2"><div><span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Tagihan</span><p class="font-black text-slate-800 text-lg">Rp ${o.Total.toLocaleString()}</p></div></div></div>`;
+            }).join('') : '<div class="text-center py-20 opacity-30 italic text-sm">Belum ada riwayat belanja.</div>';
+        }
+
+        // --- STATE & SYNC ---
         const DEFAULT_API_URL = "https://script.google.com/macros/s/AKfycbwN3BrT3us2zAikLxg5T9wmwi8yur5NDXdPU8o45Gn1WBv3uRl9uG4MxE1elZ47vchH/exec";
         let state = {
             menu: JSON.parse(localStorage.getItem('p_menu')) || [],
@@ -560,11 +597,11 @@
                     <div onclick="openDetail('${item.ID}')" class="h-32 lg:h-44 bg-slate-100 rounded-[22px] overflow-hidden mb-4 cursor-pointer relative shadow-inner">
                         <img src="${getImagePath(item.ImageURL)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                     </div>
-                    <div class="text-inherit">
-                        <span class="text-[8px] font-black uppercase text-[#52bc1a] bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100">${item.Kategori}</span>
+                    <div>
+                        <span class="text-[8px] font-black uppercase text-[#52bc1a] bg-emerald-50 px-2 py-1 rounded-full border border-emerald-100 text-inherit">${item.Kategori}</span>
                         <h4 onclick="openDetail('${item.ID}')" class="font-bold text-slate-800 mt-2 line-clamp-1 cursor-pointer text-sm lg:text-base font-black">${item.Nama}</h4>
                         <div class="flex justify-between items-center mt-3 text-inherit">
-                            <span class="text-sm font-black text-slate-800 font-bold">Rp ${(item.Harga / 1000).toFixed(0)}k</span>
+                            <span class="text-sm font-black text-slate-800 font-bold text-inherit">Rp ${(item.Harga / 1000).toFixed(0)}k</span>
                             <button onclick="addToCart('${item.ID}')" class="bg-[#52bc1a] text-white p-2 rounded-xl shadow active:scale-90 transition"><i data-lucide="plus" size="18"></i></button>
                         </div>
                     </div></div>`).join('');
@@ -596,9 +633,10 @@
                 target.classList.add('active');
                 const sideBtn = document.getElementById(`side-${view}`); if(sideBtn) sideBtn.classList.add('active');
                 const navBtn = document.getElementById(`nav-${view}`); if(navBtn) navBtn.classList.add('active');
-                document.getElementById('page-title').innerText = view === 'dashboard' ? 'Beranda' : (view === 'settings' ? 'Member Area' : view.toUpperCase());
+                let t = view === 'dashboard' ? 'Beranda' : (view === 'settings' ? 'Member Area' : view.toUpperCase());
+                document.getElementById('page-title').innerText = t;
             }
-            if(view === 'dashboard') { renderMenuGrid(state.menu); const subAll = document.getElementById('sub-all'); if(subAll) subAll.classList.add('active'); }
+            if(view === 'dashboard') renderMenuGrid(state.menu);
             if(view === 'history') renderHistory();
             closeAllOverlays(); lucide.createIcons(); window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -608,7 +646,7 @@
             if (state.checkoutStep === 1) {
                 const nameInp = document.getElementById('order-name');
                 if(!state.user && (!nameInp || nameInp.value.trim() === "")) {
-                    state.checkoutStep = 2; updateCheckoutUI(); notify("Isi nama Anda."); return;
+                    state.checkoutStep = 2; updateCheckoutUI(); notify("Silakan isi nama Anda."); return;
                 }
                 state.checkoutStep = 2; updateCheckoutUI();
             } else { checkout(); }
@@ -622,7 +660,7 @@
             if(!n || n === "") return notify("Isi nama pemesan!");
             const total = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0);
             state.transaksi.push({ ID_Transaksi: "TRX-"+Date.now(), Tanggal: new Date().toISOString(), Total: total, Pelanggan: n, Status: "Menunggu Pembayaran" });
-            notify("Memproses pesanan...");
+            notify("Mengirim pesanan...");
             const s = await callCloud('save_order', { items: state.cart, total: total, pelanggan: n, tipe: state.orderType, meja: m, pembayaran: state.currentPayment, status: 'Menunggu Pembayaran' });
             if(s) { state.cart = []; state.checkoutStep = 1; updateCartUI(); closeAllOverlays(); document.getElementById('modal-success').classList.remove('hidden'); syncData(); }
         }
@@ -633,7 +671,7 @@
             const av = document.getElementById('u-avatar'); if(av) av.src = a;
             const hav = document.getElementById('header-avatar'); if(hav) hav.src = a;
             const un = document.getElementById('u-name'); if(un) un.innerText = isU ? state.user.Nama : "Pelanggan Umum";
-            const ur = document.getElementById('u-role'); if(ur) ur.innerText = isU ? state.user.Role : "Akun Tamu / Guest";
+            const ur = document.getElementById('u-role'); if(ur) ur.innerText = isU ? state.user.Role : "AKUN TAMU / GUEST";
             const rb = document.getElementById('reg-box'); if(rb) rb.classList.toggle('hidden', isU);
             const gs = document.getElementById('guest-shortcuts'); if(gs) gs.classList.toggle('hidden', isU);
             const la = document.getElementById('logout-area'); if(la) la.classList.toggle('hidden', !isU);
@@ -652,8 +690,8 @@
                 <div class="p-8 lg:p-12 -mt-12 relative bg-white rounded-t-[50px] shadow-2xl">
                     <span class="bg-emerald-50 text-[#52bc1a] px-3 py-1 rounded-full text-[10px] font-black uppercase border border-emerald-100">${item.Kategori}</span>
                     <h2 class="hero-font text-4xl lg:text-5xl font-bold mt-4 text-slate-800 leading-none font-black text-inherit">${item.Nama}</h2>
-                    <p class="text-3xl font-black text-[#52bc1a] mt-3 mb-10 text-inherit text-inherit text-inherit text-inherit text-inherit">Rp ${item.Harga.toLocaleString('id-ID')}</p>
-                    <div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100 text-center"><h4 class="font-bold text-slate-800 mb-2">Deskripsi</h4><p class="text-sm text-slate-500 leading-relaxed text-inherit text-inherit">${item.Deskripsi}</p></div>
+                    <p class="text-3xl font-black text-[#52bc1a] mt-3 mb-10 text-inherit text-inherit">Rp ${item.Harga.toLocaleString('id-ID')}</p>
+                    <div class="p-8 bg-slate-50 rounded-[35px] border border-slate-100 text-center"><h4 class="font-bold text-slate-800 mb-2 text-inherit">Deskripsi</h4><p class="text-sm text-slate-500 leading-relaxed text-inherit text-inherit">${item.Deskripsi}</p></div>
                 </div>`;
             updateDetailUI(); document.getElementById('detail-overlay').classList.add('open'); lucide.createIcons();
         }
@@ -673,8 +711,7 @@
         function openForgotModal() { document.getElementById('modal-forgot').classList.remove('hidden'); lucide.createIcons(); }
         function submitForgotPassword() { notify("Instruksi dikirim."); closeModal('modal-forgot'); }
         function handleFileSelect(e) { const f = e.target.files[0]; if(f) { const r = new FileReader(); r.onload = (ev) => { state.tempPhoto = ev.target.result; const a = document.getElementById('u-avatar'); if(a) a.src = ev.target.result; notify("Foto terpilih."); }; r.readAsDataURL(f); } }
-        function renderHistory() { const l = document.getElementById('history-list'); if(!l) return; const idn = state.user ? state.user.Nama : 'Umum'; const ords = state.transaksi.filter(t => t.Pelanggan === idn || t.Pelanggan === 'Umum'); l.innerHTML = ords.length ? [...ords].reverse().map(o => `<div class="bg-white p-6 rounded-[30px] border border-slate-50 shadow-sm relative overflow-hidden transition hover:shadow-md text-inherit"><div class="absolute top-0 left-0 w-1.5 h-full ${o.Status==='Lunas'?'bg-[#52bc1a]':'bg-amber-400 animate-pulse'}"></div><div class="flex justify-between items-start mb-4"><div><p class="text-[9px] font-black text-slate-300 uppercase tracking-tighter">#${o.ID_Transaksi.slice(-8)}</p><p class="text-[10px] text-slate-400 text-inherit">${new Date(o.Tanggal).toLocaleDateString()}</p></div><span class="text-[8px] font-black px-3 py-1.5 rounded-full ${o.Status==='Lunas'?'bg-emerald-100 text-emerald-700':'bg-amber-100 text-amber-700'} uppercase">${o.Status}</span></div><div class="flex justify-between items-end border-t border-slate-50 pt-4 mt-2 text-inherit text-inherit text-inherit"><div><span class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Total Bayar</span><p class="font-black text-slate-800 text-lg">Rp ${o.Total.toLocaleString()}</p></div></div></div>`).join('') : '<div class="text-center py-20 opacity-30 italic text-sm text-inherit text-inherit">Belum ada riwayat belanja.</div>'; }
-        function updateCartUI() { const t = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0); const c = state.cart.reduce((a, b) => a + b.qty, 0); const tel = document.getElementById('cart-total'); if(tel) tel.innerText = "Rp " + t.toLocaleString(); document.querySelectorAll('#nav-cart-badge, #sidebar-cart-count').forEach(el => { el.innerText = c; el.classList.toggle('hidden', c === 0); }); const lst = document.getElementById('cart-list'); if(lst) lst.innerHTML = state.cart.map(i => `<div class="flex items-center gap-5 p-5 bg-white rounded-[25px] border border-slate-100 shadow-sm transition text-inherit text-inherit text-inherit text-inherit text-inherit"><img src="${i.ImageURL}" class="w-14 h-14 rounded-xl object-cover shadow-sm"><div class="flex-1 text-inherit"><p class="text-xs font-bold text-slate-800 line-clamp-1 text-inherit">${i.Nama}</p><p class="text-[10px] font-black text-[#52bc1a]">Rp ${i.Harga.toLocaleString()}</p></div><div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl"><button onclick="adjustQty('${i.ID}',-1)" class="p-1 text-slate-300 hover:text-red-500"><i data-lucide="minus-circle" size="18"></i></button><span class="text-xs font-black w-4 text-center text-inherit">${i.qty}</span><button onclick="adjustQty('${i.ID}',1)" class="p-1 text-[#52bc1a] hover:scale-110"><i data-lucide="plus-circle" size="18"></i></button></div></div>`).join('') || '<div class="text-center py-10 opacity-20 text-xs font-bold text-inherit text-inherit text-inherit text-inherit text-inherit">Keranjang Belum Terisi</div>'; lucide.createIcons(); }
+        function updateCartUI() { const t = state.cart.reduce((a, b) => a + (b.qty * b.Harga), 0); const c = state.cart.reduce((a, b) => a + b.qty, 0); const tel = document.getElementById('cart-total'); if(tel) tel.innerText = "Rp " + t.toLocaleString(); document.querySelectorAll('#nav-cart-badge, #sidebar-cart-count').forEach(el => { el.innerText = c; el.classList.toggle('hidden', c === 0); }); const lst = document.getElementById('cart-list'); if(lst) lst.innerHTML = state.cart.map(i => `<div class="flex items-center gap-5 p-5 bg-white rounded-[25px] border border-slate-100 shadow-sm transition text-inherit text-inherit text-inherit"><img src="${i.ImageURL}" class="w-14 h-14 rounded-xl object-cover shadow-sm"><div class="flex-1 text-inherit"><p class="text-xs font-bold text-slate-800 line-clamp-1 text-inherit">${i.Nama}</p><p class="text-[10px] font-black text-[#52bc1a]">Rp ${i.Harga.toLocaleString()}</p></div><div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl"><button onclick="adjustQty('${i.ID}',-1)" class="p-1 text-slate-300 hover:text-red-500 text-inherit"><i data-lucide="minus-circle" size="18"></i></button><span class="text-xs font-black w-4 text-center text-inherit">${i.qty}</span><button onclick="adjustQty('${i.ID}',1)" class="p-1 text-[#52bc1a] hover:scale-110 text-inherit"><i data-lucide="plus-circle" size="18"></i></button></div></div>`).join('') || '<div class="text-center py-10 opacity-20 text-xs font-bold text-inherit text-inherit text-inherit">Keranjang Belum Terisi</div>'; lucide.createIcons(); }
         function adjustDetailQty(d) { state.detailQty = Math.max(1, state.detailQty + d); updateDetailUI(); }
         function updateDetailUI() { const q = document.getElementById('detail-qty'); if(q) q.innerText = state.detailQty; const b = document.getElementById('btn-detail-add'); if(b && state.detailProduct) { b.innerText = `Simpan • Rp ${(state.detailProduct.Harga * state.detailQty).toLocaleString()}`; b.onclick = () => { for(let j=0; j<state.detailQty; j++) addToCart(state.detailProduct.ID, true); closeAllOverlays(); }; } }
         function addToCart(id, s = false) { const i = state.menu.find(m => m.ID === id); if(!i) return; const e = state.cart.find(c => c.ID === id); if (e) e.qty++; else state.cart.push({...i, qty: 1}); updateCartUI(); if(!s) notify(i.Nama + " ditambah."); }
@@ -683,18 +720,8 @@
         function setPayment(p) { state.currentPayment = p; document.querySelectorAll('.payment-icon-btn').forEach(b => b.classList.remove('selected')); const t = document.getElementById('pay-' + p); if(t) t.classList.add('selected'); }
         function handleBottomNavProfile() { if (state.user && ['owner','kasir','koki','waiter'].includes(state.user.Role)) router('pegawai'); else router('settings'); }
         async function callCloud(action, data) { try { const url = localStorage.getItem('p_api_url') || DEFAULT_API_URL; const r = await fetch(url, { method: 'POST', body: JSON.stringify({ action: action, data: data }) }); const j = await r.json(); return j.status === 'success'; } catch (e) { return true; } }
-        
-        function scrollToGrid() { 
-            const grid = document.getElementById('grid-menu'); 
-            if(grid) grid.scrollIntoView({ behavior: 'smooth' }); 
-        }
-
-        window.onload = () => { 
-            if (state.menu.length > 0) renderMenuGrid(state.menu); 
-            updateAuthDisplay(); 
-            syncData(); 
-            lucide.createIcons(); 
-        };
+        function scrollToGrid() { const grid = document.getElementById('grid-menu'); if(grid) grid.scrollIntoView({ behavior: 'smooth' }); }
+        window.onload = () => { if (state.menu.length > 0) renderMenuGrid(state.menu); updateAuthDisplay(); syncData(); lucide.createIcons(); };
     </script>
 </body>
 </html>
