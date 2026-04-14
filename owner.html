@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner - RM Pangkalan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>body { font-family: sans-serif; background: #f8fafc; }</style>
+</head>
+<body class="p-6">
+    <header class="mb-10 flex justify-between items-center">
+        <div><h1 class="text-3xl font-black tracking-tighter">EXECUTIVE REPORT</h1><p class="text-slate-400 text-xs font-bold uppercase tracking-widest">RM Pangkalan Natural Resto</p></div>
+        <button onclick="window.location.href='index2.html'" class="bg-white p-3 rounded-full shadow-sm text-slate-400"><i data-lucide="log-out"></i></button>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-50">
+            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Omset Hari Ini</p>
+            <h2 id="omset" class="text-3xl font-black text-[#52bc1a]">Rp 0</h2>
+        </div>
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100">
+            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Transaksi</p>
+            <h2 id="trx-count" class="text-3xl font-black text-slate-800">0</h2>
+        </div>
+        <div class="bg-white p-8 rounded-[40px] shadow-sm border border-slate-100">
+            <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Pelanggan</p>
+            <h2 id="user-count" class="text-3xl font-black text-blue-500">0</h2>
+        </div>
+    </div>
+
+    <div class="bg-white p-10 rounded-[45px] shadow-xl border border-slate-50 min-h-[400px]">
+        <h3 class="font-black text-xs uppercase tracking-widest mb-8 text-slate-400 border-b pb-4">Log Transaksi Terbaru</h3>
+        <div id="log-list" class="space-y-4"></div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwN3BrT3us2zAikLxg5T9wmwi8yur5NDXdPU8o45Gn1WBv3uRl9uG4MxE1elZ47vchH/exec";
+        
+        async function loadReport() {
+            const r = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action: 'sync_all', data: {} }) });
+            const res = await r.json();
+            const trx = res.data.Transaksi;
+            const users = res.data.Users;
+
+            document.getElementById('omset').innerText = "Rp " + trx.filter(t=>t.Status==='Lunas'||t.Status==='Selesai').reduce((a,b)=>a+parseFloat(b.Total),0).toLocaleString();
+            document.getElementById('trx-count').innerText = trx.length;
+            document.getElementById('user-count').innerText = users.length;
+
+            const log = document.getElementById('log-list');
+            log.innerHTML = trx.slice(-10).reverse().map(t => `
+                <div class="flex items-center justify-between p-4 bg-slate-50 rounded-2xl">
+                    <div><h4 class="font-bold text-sm">${t.Pelanggan}</h4><p class="text-[10px] font-black text-[#52bc1a] uppercase">${t.Status}</p></div>
+                    <div class="text-right"><p class="font-black text-sm">Rp ${parseFloat(t.Total).toLocaleString()}</p><p class="text-[9px] text-slate-400">${new Date(t.Tanggal).toLocaleTimeString()}</p></div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+        window.onload = loadReport;
+    </script>
+</body>
+</html>
