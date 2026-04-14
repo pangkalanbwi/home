@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dapur - RM Pangkalan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-900 text-white p-6">
+    <header class="flex justify-between items-center mb-10">
+        <div><h1 class="text-2xl font-black text-[#ccff00]">DAPUR ORDER</h1><p class="text-slate-400 text-xs font-bold uppercase">Antrean Masak Real-time</p></div>
+        <button onclick="location.reload()" class="bg-slate-800 p-3 rounded-full text-slate-400"><i data-lucide="refresh-cw"></i></button>
+    </header>
+
+    <div id="list-dapur" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <p class="col-span-full text-center py-20 opacity-30 italic">Memuat pesanan lunas...</p>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwN3BrT3us2zAikLxg5T9wmwi8yur5NDXdPU8o45Gn1WBv3uRl9uG4MxE1elZ47vchH/exec";
+        
+        async function sync() {
+            const r = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action: 'sync_all', data: {} }) });
+            const res = await r.json();
+            const list = document.getElementById('list-dapur');
+            const lunas = res.data.Transaksi.filter(t => t.Status === 'Lunas');
+            list.innerHTML = lunas.map(t => {
+                const items = JSON.parse(t.Item_JSON || "[]");
+                return `
+                <div class="bg-slate-800 p-8 rounded-[40px] border-l-8 border-[#ccff00]">
+                    <div class="flex justify-between border-b border-slate-700 pb-4 mb-4">
+                        <h4 class="text-xl font-black">MEJA ${t.Meja}</h4>
+                        <span class="text-slate-500 font-bold">#${t.ID_Transaksi.slice(-5)}</span>
+                    </div>
+                    <div class="space-y-3 mb-8">
+                        ${items.map(it => `<div class="flex justify-between font-bold text-lg"><span>${it.Nama}</span> <span class="bg-white/10 px-2 rounded">x${it.qty}</span></div>`).join('')}
+                    </div>
+                    <button onclick="finish('${t.ID_Transaksi}')" class="w-full bg-[#ccff00] text-slate-900 py-4 rounded-2xl font-black text-sm">SAJIKAN PESANAN</button>
+                </div>`;
+            }).join('') || '<div class="col-span-full text-center py-20 opacity-20 font-bold">Dapur Bersih - Tidak Ada Antrean</div>';
+            lucide.createIcons();
+        }
+
+        async function finish(id) {
+            await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'update_data', data:{ targetSheet:'Transaksi', id:id, column:'Status', newValue:'Selesai' }}) });
+            sync();
+        }
+
+        window.onload = sync;
+    </script>
+</body>
+</html>
