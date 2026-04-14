@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasir - RM Pangkalan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: sans-serif; background: #f8fafc; }
+        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
+        @media print { body * { visibility: hidden; } #print-area, #print-area * { visibility: visible; } #print-area { position: absolute; left: 0; top: 0; width: 80mm; font-family: monospace; } }
+    </style>
+</head>
+<body class="p-6">
+    <div id="print-area" class="hidden"></div>
+    <header class="flex justify-between items-center mb-10">
+        <div><h1 class="text-2xl font-black">KASIR PANEL</h1><p class="text-slate-400 text-xs font-bold uppercase">Verifikasi & Pembayaran</p></div>
+        <button onclick="window.location.href='index2.html'" class="bg-slate-100 p-3 rounded-full text-slate-500"><i data-lucide="home"></i></button>
+    </header>
+
+    <div id="list-kasir" class="space-y-4 max-w-2xl mx-auto">
+        <p class="text-center py-20 opacity-30 italic">Memuat data transaksi...</p>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwN3BrT3us2zAikLxg5T9wmwi8yur5NDXdPU8o45Gn1WBv3uRl9uG4MxE1elZ47vchH/exec";
+        let transactions = [];
+
+        async function sync() {
+            const r = await fetch(API_URL, { method:'POST', body: JSON.stringify({ action: 'sync_all', data: {} }) });
+            const res = await r.json();
+            transactions = res.data.Transaksi;
+            render();
+        }
+
+        function render() {
+            const list = document.getElementById('list-kasir');
+            const waiting = transactions.filter(t => t.Status === 'Menunggu Pembayaran');
+            list.innerHTML = waiting.map(t => `
+                <div class="card flex justify-between items-center border border-slate-100">
+                    <div>
+                        <p class="text-[10px] font-black text-blue-500 uppercase">#${t.ID_Transaksi.slice(-8)}</p>
+                        <h4 class="font-bold text-lg">${t.Pelanggan}</h4>
+                        <p class="text-sm font-black text-[#52bc1a]">Rp ${parseFloat(t.Total).toLocaleString()}</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="printBill('${t.ID_Transaksi}')" class="p-4 bg-slate-50 rounded-2xl text-slate-400"><i data-lucide="printer"></i></button>
+                        <button onclick="pay('${t.ID_Transaksi}')" class="bg-[#52bc1a] text-white px-6 py-3 rounded-2xl font-bold text-xs">LUNAS</button>
+                    </div>
+                </div>
+            `).join('') || '<div class="text-center py-20 opacity-20 font-bold">Antrean Kasir Bersih</div>';
+            lucide.createIcons();
+        }
+
+        async function pay(id) {
+            if(!confirm("Konfirmasi Lunas?")) return;
+            await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'update_data', data:{ targetSheet:'Transaksi', id:id, column:'Status', newValue:'Lunas' }}) });
+            sync();
+        }
+
+        function printBill(id) {
+            const t = transactions.find(x => x.ID_Transaksi === id);
+            document.getElementById('print-area').innerHTML = `<h2>RM PANGKALAN</h2><p>Customer: ${t.Pelanggan}</p><p>Total: Rp ${parseFloat(t.Total).toLocaleString()}</p><p>Terima Kasih!</p>`;
+            window.print();
+        }
+
+        window.onload = sync;
+    </script>
+</body>
+</html>
